@@ -1,5 +1,5 @@
 magicpod-analyzer
-=================
+================
 
 Export MagicPod test data for analyzing. Inspired by [CIAnalyzer](https://github.com/Kesin11/CIAnalyzer).
 
