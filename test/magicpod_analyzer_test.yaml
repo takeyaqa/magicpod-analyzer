@@ -1,0 +1,8 @@
+magicpod:
+  projects:
+    - DummyOrg/DummyPrj
+  exporter:
+    local:
+      format: json
+  lastRunStore:
+    backend: local

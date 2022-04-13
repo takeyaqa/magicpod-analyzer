@@ -1,4 +1,5 @@
 import axios, {AxiosInstance} from 'axios'
+import {minBy} from 'lodash'
 
 /* eslint-disable camelcase */
 type Status = 'not-running' | 'running' | 'succeeded' | 'failed' | 'aborted' | 'unresolved'
@@ -52,6 +53,8 @@ interface DataPattern {
 }
 /* eslint-enable camelcase */
 
+const COUNT = 100
+
 export class MagicPodClient {
   private readonly axios: AxiosInstance;
 
@@ -65,7 +68,7 @@ export class MagicPodClient {
     })
   }
 
-  async getBatchRuns(organizationName: string, projectName: string, minBatchRunNumber = 1): Promise<BatchRuns> {
+  async getBatchRuns(organizationName: string, projectName: string, minBatchRunNumber?: number): Promise<BatchRuns> {
     // Retrieve batch runs
     const originalBatchRuns = await this.retrieveBatchRuns(organizationName, projectName, minBatchRunNumber)
 
@@ -73,18 +76,19 @@ export class MagicPodClient {
     return this.retrieveDetailedBatchRuns(originalBatchRuns)
   }
 
-  private async retrieveBatchRuns(organizationName: string, projectName: string, minBatchRunNumber = 1): Promise<BatchRuns> {
-    const query = `?count=20&min_batch_run_number=${minBatchRunNumber}`
-    const res = await this.axios.get(`/${organizationName}/${projectName}/batch-runs/${query}`)
+  private async retrieveBatchRuns(organizationName: string, projectName: string, minBatchRunNumber?: number): Promise<BatchRuns> {
+    const query = minBatchRunNumber ? `&min_batch_run_number=${minBatchRunNumber + 1}` : ''
+    const res = await this.axios.get(`/${organizationName}/${projectName}/batch-runs/?count=${COUNT}${query}`)
     const batchRuns = res.data as BatchRuns
 
-    // Reverse list to asc
-    batchRuns.batch_runs.reverse()
-
     // Cut running data
-    const lastIndex = batchRuns.batch_runs.findIndex(batchRun => batchRun.status === 'running' || batchRun.status === 'unresolved')
-    if (lastIndex !== -1) {
-      batchRuns.batch_runs = batchRuns.batch_runs.slice(0, lastIndex) // eslint-disable-line camelcase
+    const firstInprogress = minBy(
+      batchRuns.batch_runs.filter(batchRun => batchRun.status === 'running' || batchRun.status === 'unresolved'),
+      'batch_run_number',
+    )
+    if (firstInprogress) {
+      // eslint-disable-next-line camelcase
+      batchRuns.batch_runs = batchRuns.batch_runs.filter(batchRun => batchRun.batch_run_number < firstInprogress.batch_run_number)
     }
 
     return batchRuns

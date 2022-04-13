@@ -26,7 +26,7 @@ interface TestSuite {
   errors: number
   failures: number
   skipped: number
-  timestamp: string
+  timestamp: Date
   time: number
   tests: number
   testcase: TestCase[]
@@ -53,8 +53,6 @@ export class MagicPodAnalyzer {
         createdAt: new Date(batchRun.started_at),
         branch: '',
         service: 'magicpod',
-        status: batchRun.status === 'succeeded' ? 'SUCCESS' : 'FAILURE',
-        successCount: batchRun.status === 'succeeded' ? 1 : 0,
         testSuites: {
           name: batchRun.test_setting_name,
           tests: batchRun.test_cases.total,
@@ -65,12 +63,14 @@ export class MagicPodAnalyzer {
             errors: 0,
             failures: batchRun.test_cases.failed ?? 0,
             skipped: 0,
-            timestamp: batchRun.started_at,
+            timestamp: new Date(batchRun.started_at),
             time: duration,
             tests: batchRun.test_cases.total,
             testcase: this.convertTestCases(batchRun.test_cases.details[0].results),
           }],
         },
+        status: batchRun.status === 'succeeded' ? 'SUCCESS' : 'FAILURE',
+        successCount: batchRun.status === 'succeeded' ? 1 : 0,
       })
     }
 
@@ -79,7 +79,7 @@ export class MagicPodAnalyzer {
 
   private convertTestCases(testCaseResults: TestCaseResult[]): TestCase[] {
     return testCaseResults.map(testCaseResult => {
-      const name = testCaseResult.number ? `${testCaseResult.number}` : ''
+      const name = testCaseResult.number ? `No.${testCaseResult.number}` : 'No.'
       return {
         classname: name,
         name: name,

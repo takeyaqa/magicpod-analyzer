@@ -1,6 +1,6 @@
 {
   "name": "magicpod-analyzer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Export MagicPod test data for analyzing.",
   "author": "Takeshi Kishi",
   "bin": {
@@ -17,14 +17,20 @@
     "/oclif.manifest.json"
   ],
   "dependencies": {
+    "@google-cloud/bigquery": "^5.12.0",
+    "@google-cloud/storage": "^5.19.0",
     "@oclif/core": "^1",
     "@oclif/plugin-help": "^5",
     "axios": "^0.26.1",
-    "dayjs": "^1.11.0"
+    "dayjs": "^1.11.0",
+    "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21",
+    "tslog": "^3.3.3"
   },
   "devDependencies": {
     "@oclif/test": "^2",
     "@types/chai": "^4",
+    "@types/js-yaml": "^4.0.5",
     "@types/mocha": "^9.1.0",
     "@types/node": "^16.11.26",
     "chai": "^4",

@@ -8,4 +8,7 @@
 node_modules
 oclif.manifest.json
 /output
+/.magicpod_analyzer
 tsconfig.tsbuildinfo
+service_account.json
+magicpod_analyzer.yaml

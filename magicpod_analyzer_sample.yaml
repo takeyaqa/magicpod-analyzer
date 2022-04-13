@@ -1,0 +1,9 @@
+magicpod:
+  projects:
+    - MyOrganization/MyProjectOne
+    - MyOrganization/MyProjectTwo
+  exporter:
+    local:
+      format: json
+  lastRunStore:
+    backend: local
