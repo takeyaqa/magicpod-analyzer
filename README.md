@@ -20,7 +20,7 @@ $ npm install -g magicpod-analyzer
 $ magicpod-analyzer COMMAND
 running command...
 $ magicpod-analyzer (--version)
-magicpod-analyzer/0.0.0 darwin-x64 node-v16.13.0
+magicpod-analyzer/0.2.0 darwin-x64 node-v16.13.0
 $ magicpod-analyzer --help [COMMAND]
 USAGE
   $ magicpod-analyzer COMMAND
@@ -38,21 +38,21 @@ Retrieve specified project's batch run data from MagicPod.
 
 ```
 USAGE
-  $ magicpod-analyzer get-batch-runs [PROJECT] --token <value> [--minBatchRunNumber <value>]
-
-ARGUMENTS
-  PROJECT  organizationName/projectName
+  $ magicpod-analyzer get-batch-runs --token <value> [-c <value>]
 
 FLAGS
-  --minBatchRunNumber=<value>  The specified count of records ending with (and larger than or equals to) this minimum batch run number is retrieved.
-  --token=<value>              (required) Access token for MagicPod API. You can also set this value via environment variable `MAGICPOD_TOKEN`
+  -c, --config=<value>  Config file default: magicpod_analyzer.yaml
+  --token=<value>       (required) Access token for MagicPod API. You can also set this value via environment variable
+                        `MAGICPOD_TOKEN`
 
 DESCRIPTION
   Retrieve specified project's batch run data from MagicPod.
 
 EXAMPLES
-  $ magicpod-analyzer get-batch-runs MyOrganization/MyProject
+  $ magicpod-analyzer get-batch-runs
 ```
+
+_See code: [dist/commands/get-batch-runs.ts](https://github.com/takeya0x86/magicpod-analyzer/blob/v0.2.0/dist/commands/get-batch-runs.ts)_
 
 ## `magicpod-analyzer help [COMMAND]`
 
@@ -72,4 +72,5 @@ DESCRIPTION
   Display help for magicpod-analyzer.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.10/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.12/src/commands/help.ts)_
+<!-- commandsstop -->
