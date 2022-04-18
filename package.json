@@ -6,13 +6,17 @@
   "bin": {
     "magicpod-analyzer": "./bin/run"
   },
-  "homepage": "https://github.com/takeya0x86/magicpod-analyzer",
+  "homepage": "https://github.com/takeya0x86/magicpod-analyzer#readme",
   "license": "MIT",
   "main": "dist/index.js",
-  "repository": "takeya0x86/magicpod-analyzer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/takeya0x86/magicpod-analyzer.git"
+  },
   "files": [
     "/bin",
     "/dist",
+    "/bigquery_schema",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
@@ -67,7 +71,8 @@
   },
   "bugs": "https://github.com/takeya0x86/magicpod-analyzer/issues",
   "keywords": [
-    "oclif"
+    "oclif",
+    "MagicPod"
   ],
   "types": "dist/index.d.ts"
 }
