@@ -9,10 +9,7 @@
   "homepage": "https://github.com/takeya0x86/magicpod-analyzer#readme",
   "license": "MIT",
   "main": "dist/index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/takeya0x86/magicpod-analyzer.git"
-  },
+  "repository": "takeya0x86/magicpod-analyzer",
   "files": [
     "/bin",
     "/dist",
