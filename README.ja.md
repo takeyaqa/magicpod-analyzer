@@ -1,7 +1,7 @@
 magicpod-analyzer
 =================
 
-Export MagicPod test data for analyzing. Inspired by [CIAnalyzer](https://github.com/Kesin11/CIAnalyzer).
+MagicPodのテスト実行データを分析用に出力します. [CIAnalyzer](https://github.com/Kesin11/CIAnalyzer)を参考にしています。
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/magicpod-analyzer.svg)](https://npmjs.org/package/magicpod-analyzer)
@@ -9,11 +9,9 @@ Export MagicPod test data for analyzing. Inspired by [CIAnalyzer](https://github
 [![Downloads/week](https://img.shields.io/npm/dw/magicpod-analyzer.svg)](https://npmjs.org/package/magicpod-analyzer)
 [![License](https://img.shields.io/npm/l/magicpod-analyzer.svg)](https://github.com/takeya0x86/magicpod-analyzer/blob/main/package.json)
 
-[日本語版はこちら](./README.ja.md)
-
 <!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
+* [使い方](#usage)
+* [コマンド](#commands)
 <!-- tocstop -->
 # Usage
 <!-- usage -->
@@ -36,7 +34,7 @@ USAGE
 
 ## `magicpod-analyzer get-batch-runs`
 
-Retrieve specified project's batch run data from MagicPod.
+特定のプロジェクトの一括実行データを取得する
 
 ```
 USAGE
@@ -58,7 +56,7 @@ _See code: [dist/commands/get-batch-runs.ts](https://github.com/takeya0x86/magic
 
 ## `magicpod-analyzer help [COMMAND]`
 
-Display help for magicpod-analyzer.
+magicpod-analyzerのヘルプを表示する
 
 ```
 USAGE
