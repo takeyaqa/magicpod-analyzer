@@ -4,6 +4,8 @@ magicpod:
     - MyOrganization/MyProjectTwo
   exporter:
     local:
+      outDir: ./output
       format: json
   lastRunStore:
     backend: local
+    path: .magicpod_analyzer/last_run/magicpod.json
