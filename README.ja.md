@@ -253,4 +253,4 @@ magicpod-analyzer get-batch-runs -c magicpod_analyzer.yaml
 
 magicpod-analyzer単体ではダッシュボードの表示機能は提供しません。
 
-データを蓄積したBigQueryを[Google Studio](https://marketingplatform.google.com/intl/ja/about/data-studio/)や[Redash](https://redash.io/)などに接続してグラフや表を作成してください。
+データを蓄積したBigQueryを[Google Data Studio](https://marketingplatform.google.com/intl/ja/about/data-studio/)や[Redash](https://redash.io/)などに接続してグラフや表を作成してください。
