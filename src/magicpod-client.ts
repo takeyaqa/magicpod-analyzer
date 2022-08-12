@@ -60,7 +60,7 @@ export class MagicPodClient {
 
   constructor(token: string) {
     this.axios = axios.create({
-      baseURL: 'https://magic-pod.com/api/v1.0',
+      baseURL: 'https://app.magicpod.com/api/v1.0',
       headers: {
         Authorization: `Token ${token}`,
         Accept: 'application/json',
