@@ -17,6 +17,6 @@ describe('get-batch-runs', () => {
   test
   .stdout()
   .command(['get-batch-runs'])
-  .catch(/^Missing required flag:\n --token.+$/s)
+  .catch(/Missing required flag token/s)
   .it('Error without token')
 })
