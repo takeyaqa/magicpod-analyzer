@@ -17,7 +17,6 @@ workflows:
               node_version:
                 - latest
                 - lts
-                - maintenance
   dependabot-automerge:
     triggers:
       - schedule:
