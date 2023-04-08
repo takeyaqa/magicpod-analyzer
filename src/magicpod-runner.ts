@@ -22,7 +22,7 @@ export class MagicPodRunner {
   constructor(logger: Logger, config: MagicPodConfig, token = '') {
     this.logger = logger.getChildLogger({name: MagicPodRunner.name})
     this.config = config
-    this.client = new MagicPodClient(token)
+    this.client = new MagicPodClient(token, logger)
     this.analyzer = new MagicPodAnalyzer()
   }
 

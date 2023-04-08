@@ -1,5 +1,6 @@
 import axios, {AxiosInstance} from 'axios'
 import {minBy} from 'lodash'
+import {Logger} from 'tslog'
 
 /* eslint-disable camelcase */
 type Status = 'not-running' | 'running' | 'succeeded' | 'failed' | 'aborted' | 'unresolved'
@@ -56,15 +57,52 @@ interface DataPattern {
 const COUNT = 100
 
 export class MagicPodClient {
-  private readonly axios: AxiosInstance;
+  private readonly axios: AxiosInstance
+  private readonly logger: Logger
 
-  constructor(token: string) {
+  constructor(token: string, logger: Logger) {
     this.axios = axios.create({
       baseURL: 'https://app.magicpod.com/api/v1.0',
       headers: {
         Authorization: `Token ${token}`,
         Accept: 'application/json',
       },
+    })
+
+    this.logger = logger.getChildLogger({name: MagicPodClient.name})
+
+    this.axios.interceptors.request.use(request => {
+      this.logger.debug(`${request.method?.toUpperCase()} ${request.url}`)
+      this.logger.debug('request', {
+        method: request.method?.toUpperCase(),
+        baseUrl: request.baseURL,
+        url: request.url,
+        params: request.params,
+      })
+      return request
+    })
+    this.axios.interceptors.response.use(response => {
+      return response
+    }, error => {
+      if (axios.isAxiosError(error)) {
+        logger.error({
+          message: error.message,
+          request: {
+            method: error.request?.method ?? error.request?._currentRequest.method,
+            host: error.request?.host ?? error.request?._currentRequest.host,
+            path: error.request?.path ?? error.request?._currentRequest.path,
+          },
+          response: {
+            status: error.response?.status,
+            statusText: error.response?.statusText,
+            baseUrl: error.response?.config.baseURL,
+            url: error.response?.config.url,
+            params: error.response?.config.params,
+          },
+        })
+      }
+
+      return Promise.reject(error)
     })
   }
 
