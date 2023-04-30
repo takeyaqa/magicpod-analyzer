@@ -20,7 +20,7 @@ $ npm install -g magicpod-analyzer
 $ magicpod-analyzer COMMAND
 running command...
 $ magicpod-analyzer (--version)
-magicpod-analyzer/0.2.0 darwin-x64 node-v16.13.0
+magicpod-analyzer/0.4.0 darwin-arm64 node-v18.16.0
 $ magicpod-analyzer --help [COMMAND]
 USAGE
   $ magicpod-analyzer COMMAND
@@ -30,7 +30,7 @@ USAGE
 # Commands
 <!-- commands -->
 * [`magicpod-analyzer get-batch-runs`](#magicpod-analyzer-get-batch-runs)
-* [`magicpod-analyzer help [COMMAND]`](#magicpod-analyzer-help-command)
+* [`magicpod-analyzer help [COMMANDS]`](#magicpod-analyzer-help-command)
 
 ## `magicpod-analyzer get-batch-runs`
 
@@ -38,10 +38,12 @@ USAGE
 
 ```
 USAGE
-  $ magicpod-analyzer get-batch-runs --token <value> [-c <value>]
+  $ magicpod-analyzer get-batch-runs --token <value> [-c <value>] [-d]
 
 FLAGS
   -c, --config=<value>  Config file default: magicpod_analyzer.yaml
+  -d, --debug           Enable debug mode. You can also set this value via environment variable
+                        `MAGICPOD_ANALYZER_DEBUG`
   --token=<value>       (required) Access token for MagicPod API. You can also set this value via environment variable
                         `MAGICPOD_TOKEN`
 
@@ -54,16 +56,16 @@ EXAMPLES
 
 _See code: [dist/commands/get-batch-runs.ts](https://github.com/takeya0x86/magicpod-analyzer/blob/v0.2.0/dist/commands/get-batch-runs.ts)_
 
-## `magicpod-analyzer help [COMMAND]`
+## `magicpod-analyzer help [COMMANDS]`
 
 magicpod-analyzerのヘルプを表示する
 
 ```
 USAGE
-  $ magicpod-analyzer help [COMMAND] [-n]
+  $ magicpod-analyzer help [COMMANDS] [-n]
 
 ARGUMENTS
-  COMMAND  Command to show help for.
+  COMMANDS  Command to show help for.
 
 FLAGS
   -n, --nested-commands  Include all nested commands in the output.
@@ -72,7 +74,7 @@ DESCRIPTION
   Display help for magicpod-analyzer.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.12/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.9/src/commands/help.ts)_
 <!-- commandsstop -->
 
 ## 概要と仕組み
@@ -163,6 +165,14 @@ magicpod-analyzer get-batch-runs -c magicpod_analyzer.yaml --token=<MagicPodToke
   }
 ]
 ```
+
+## デバッグモード
+
+実行時に `-d` オプションをつける、または環境変数 `MAGICPOD_ANALYZER_DEBUG` に `true` を設定するとデバッグモードが有効になります。デバッグモード中は以下の動作になります。
+
+- ログレベルが `debug` に設定
+- 常に最新のデータから10件の取得に制限、最終実行の記録を行わない
+- BigQueryへのエクスポートを行わない。ローカル出力のみ有効
 
 ## BigQueryエクスポートでの実行
 

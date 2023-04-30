@@ -1,6 +1,7 @@
 import {Logger} from 'tslog'
 import {GcsStore} from './gcs-store'
 import {LocalStore} from './local-store'
+import {NullStore} from './null-store'
 import {GCSLastRunStoreConfig, LastRunStoreConfig, LocalLastRunStoreConfig} from '../magicpod-config'
 
 export interface LastRun {
@@ -19,9 +20,11 @@ export class LastRunStore {
   private readonly store: Store
   private lastRun: LastRun
 
-  static async init(logger: Logger, config: LastRunStoreConfig): Promise<LastRunStore> {
+  static async init(logger: Logger, config: LastRunStoreConfig, debugMode = false): Promise<LastRunStore> {
     let store
-    if (!config) {
+    if (debugMode) {
+      store = new NullStore(logger)
+    } else if (!config) {
       store = new LocalStore(logger)
     } else if (config.backend === 'local') {
       store = new LocalStore(logger, (config as LocalLastRunStoreConfig).path)

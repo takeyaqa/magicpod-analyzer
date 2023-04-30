@@ -17,17 +17,23 @@ export class MagicPodRunner {
   private readonly config: MagicPodConfig
   private readonly client: MagicPodClient
   private readonly analyzer: MagicPodAnalyzer
+  private readonly debugMode: boolean
   private store?: LastRunStore
 
-  constructor(logger: Logger, config: MagicPodConfig, token = '') {
+  constructor(logger: Logger, config: MagicPodConfig, token = '', debugMode = false) {
     this.logger = logger.getChildLogger({name: MagicPodRunner.name})
     this.config = config
-    this.client = new MagicPodClient(token)
+    this.client = new MagicPodClient(token, logger, debugMode)
     this.analyzer = new MagicPodAnalyzer()
+    this.debugMode = debugMode
   }
 
   async run(): Promise<Result> {
-    this.store = await LastRunStore.init(this.logger, this.config.lastRunStore)
+    if (this.debugMode) {
+      this.logger.info('--- Enable DEBUG mode ---')
+    }
+
+    this.store = await LastRunStore.init(this.logger, this.config.lastRunStore, this.debugMode)
     const allReports: TestReport[][] = []
     let result: Result = {status: 'success'}
     for (const project of this.config.projects) {
@@ -60,7 +66,7 @@ export class MagicPodRunner {
 
     // export
     this.logger.info('Exporting magicpod workflow reports ...')
-    const exporter = new CompositExporter(this.logger, this.config.exporter)
+    const exporter = new CompositExporter(this.logger, this.config.exporter, this.debugMode)
     await exporter.exportTestReports(allReports.flat())
 
     await this.store.save()

@@ -13,6 +13,7 @@ export default class GetBatchRuns extends Command {
   static flags = {
     config: Flags.string({description: 'Config file default: magicpod_analyzer.yaml', char: 'c'}),
     token: Flags.string({description: 'Access token for MagicPod API. You can also set this value via environment variable `MAGICPOD_TOKEN`', env: 'MAGICPOD_TOKEN', required: true}),
+    debug: Flags.boolean({description: 'Enable debug mode. You can also set this value via environment variable `MAGICPOD_ANALYZER_DEBUG`', env: 'MAGICPOD_ANALYZER_DEBUG', char: 'd'}),
   }
 
   async run(): Promise<void> {
@@ -20,7 +21,7 @@ export default class GetBatchRuns extends Command {
 
     const logger = new Logger({
       overwriteConsole: true,
-      minLevel: 'info',
+      minLevel: flags.debug ? 'debug' : 'info',
       displayInstanceName: true,
       displayDateTime: false,
       displayFunctionName: false,
@@ -29,7 +30,7 @@ export default class GetBatchRuns extends Command {
     const configFile = flags.config ?? 'magicpod_analyzer.yaml'
 
     const config = await loadConfig(configFile)
-    const runner = new MagicPodRunner(logger, config, flags.token)
+    const runner = new MagicPodRunner(logger, config, flags.token, flags.debug)
     const result = await runner.run()
     if (result.error) {
       this.error(result.error, {exit: 1})
