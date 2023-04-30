@@ -54,13 +54,15 @@ interface DataPattern {
 }
 /* eslint-enable camelcase */
 
-const COUNT = 100
+const DEFAULT_COUNT = 100
+const DEBUG_COUNT = 10
 
 export class MagicPodClient {
   private readonly axios: AxiosInstance
   private readonly logger: Logger
+  private readonly debugMode: boolean
 
-  constructor(token: string, logger: Logger) {
+  constructor(token: string, logger: Logger, debugMode = false) {
     this.axios = axios.create({
       baseURL: 'https://app.magicpod.com/api/v1.0',
       headers: {
@@ -70,6 +72,7 @@ export class MagicPodClient {
     })
 
     this.logger = logger.getChildLogger({name: MagicPodClient.name})
+    this.debugMode = debugMode
 
     this.axios.interceptors.request.use(request => {
       this.logger.debug(`${request.method?.toUpperCase()} ${request.url}`)
@@ -116,7 +119,8 @@ export class MagicPodClient {
 
   private async retrieveBatchRuns(organizationName: string, projectName: string, minBatchRunNumber?: number): Promise<BatchRuns> {
     const query = minBatchRunNumber ? `&min_batch_run_number=${minBatchRunNumber + 1}` : ''
-    const res = await this.axios.get(`/${organizationName}/${projectName}/batch-runs/?count=${COUNT}${query}`)
+    const count = this.debugMode ? DEBUG_COUNT : DEFAULT_COUNT
+    const res = await this.axios.get(`/${organizationName}/${projectName}/batch-runs/?count=${count}${query}`)
     const batchRuns = res.data as BatchRuns
 
     // Cut running data

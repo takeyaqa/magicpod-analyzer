@@ -11,8 +11,8 @@ export interface Exporter {
 export class CompositExporter implements Exporter {
   private readonly exporters: Exporter[]
 
-  constructor(logger: Logger, config?: ExporterConfig) {
-    if (!config) {
+  constructor(logger: Logger, config?: ExporterConfig, debugMode = false) {
+    if (debugMode || !config) {
       this.exporters = [new LocalExporter(logger)]
       return
     }

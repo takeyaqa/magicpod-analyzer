@@ -15,6 +15,18 @@ describe('get-batch-runs', () => {
   })
 
   test
+  .nock('https://app.magicpod.com', api => {
+    api.get('/api/v1.0/DummyOrg/DummyPrj/batch-runs/?count=10')
+    .reply(200, {organization_name: 'DummyOrg', project_name: 'DummyPrj', batch_runs: []})
+  })
+  .stdout()
+  .command(['get-batch-runs', '--token', 'abc', '-c', './test/magicpod_analyzer_test.yaml', '--debug'])
+  .exit(0)
+  .it('Debug mode', ctx => {
+    expect(ctx.stdout).to.contain('INFO  [NullStore] Detect DEBUG mode, skip saving lastRun.')
+  })
+
+  test
   .stdout()
   .command(['get-batch-runs'])
   .catch(/Missing required flag token/s)
