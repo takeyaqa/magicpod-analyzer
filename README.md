@@ -22,7 +22,7 @@ $ npm install -g magicpod-analyzer
 $ magicpod-analyzer COMMAND
 running command...
 $ magicpod-analyzer (--version)
-magicpod-analyzer/0.4.0 darwin-x64 node-v16.13.0
+magicpod-analyzer/0.4.0 darwin-arm64 node-v18.16.0
 $ magicpod-analyzer --help [COMMAND]
 USAGE
   $ magicpod-analyzer COMMAND
@@ -32,7 +32,7 @@ USAGE
 # Commands
 <!-- commands -->
 * [`magicpod-analyzer get-batch-runs`](#magicpod-analyzer-get-batch-runs)
-* [`magicpod-analyzer help [COMMAND]`](#magicpod-analyzer-help-command)
+* [`magicpod-analyzer help [COMMANDS]`](#magicpod-analyzer-help-commands)
 
 ## `magicpod-analyzer get-batch-runs`
 
@@ -40,10 +40,12 @@ Retrieve specified project's batch run data from MagicPod.
 
 ```
 USAGE
-  $ magicpod-analyzer get-batch-runs --token <value> [-c <value>]
+  $ magicpod-analyzer get-batch-runs --token <value> [-c <value>] [-d]
 
 FLAGS
   -c, --config=<value>  Config file default: magicpod_analyzer.yaml
+  -d, --debug           Enable debug mode. You can also set this value via environment variable
+                        `MAGICPOD_ANALYZER_DEBUG`
   --token=<value>       (required) Access token for MagicPod API. You can also set this value via environment variable
                         `MAGICPOD_TOKEN`
 
@@ -56,16 +58,16 @@ EXAMPLES
 
 _See code: [dist/commands/get-batch-runs.ts](https://github.com/takeya0x86/magicpod-analyzer/blob/v0.4.0/dist/commands/get-batch-runs.ts)_
 
-## `magicpod-analyzer help [COMMAND]`
+## `magicpod-analyzer help [COMMANDS]`
 
 Display help for magicpod-analyzer.
 
 ```
 USAGE
-  $ magicpod-analyzer help [COMMAND] [-n]
+  $ magicpod-analyzer help [COMMANDS] [-n]
 
 ARGUMENTS
-  COMMAND  Command to show help for.
+  COMMANDS  Command to show help for.
 
 FLAGS
   -n, --nested-commands  Include all nested commands in the output.
@@ -74,5 +76,5 @@ DESCRIPTION
   Display help for magicpod-analyzer.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.12/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.9/src/commands/help.ts)_
 <!-- commandsstop -->
