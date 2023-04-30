@@ -29,7 +29,7 @@
     "tslog": "^3.3.4"
   },
   "devDependencies": {
-    "@oclif/test": "^2.3.13",
+    "@oclif/test": "^2.3.17",
     "@types/chai": "^4",
     "@types/js-yaml": "^4.0.5",
     "@types/mocha": "^9.0.0",
