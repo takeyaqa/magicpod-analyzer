@@ -19,7 +19,7 @@
   ],
   "dependencies": {
     "@google-cloud/bigquery": "^6.2.0",
-    "@google-cloud/storage": "^6.9.5",
+    "@google-cloud/storage": "^6.10.1",
     "@oclif/core": "^2",
     "@oclif/plugin-help": "^5",
     "axios": "^1.4.0",
