@@ -5,9 +5,8 @@ MagicPodのテスト実行データを分析用に出力します. [CIAnalyzer](
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/magicpod-analyzer.svg)](https://npmjs.org/package/magicpod-analyzer)
-[![CircleCI](https://circleci.com/gh/takeya0x86/magicpod-analyzer/tree/main.svg?style=shield)](https://circleci.com/gh/takeya0x86/magicpod-analyzer/tree/main)
 [![Downloads/week](https://img.shields.io/npm/dw/magicpod-analyzer.svg)](https://npmjs.org/package/magicpod-analyzer)
-[![License](https://img.shields.io/npm/l/magicpod-analyzer.svg)](https://github.com/takeya0x86/magicpod-analyzer/blob/main/package.json)
+[![License](https://img.shields.io/npm/l/magicpod-analyzer.svg)](https://github.com/takeyaqa/magicpod-analyzer/blob/main/package.json)
 
 <!-- toc -->
 * [使い方](#usage)
@@ -54,7 +53,7 @@ EXAMPLES
   $ magicpod-analyzer get-batch-runs
 ```
 
-_See code: [dist/commands/get-batch-runs.ts](https://github.com/takeya0x86/magicpod-analyzer/blob/v0.5.0/dist/commands/get-batch-runs.ts)_
+_See code: [dist/commands/get-batch-runs.ts](https://github.com/takeyaqa/magicpod-analyzer/blob/v0.5.0/dist/commands/get-batch-runs.ts)_
 
 ## `magicpod-analyzer help [COMMANDS]`
 
@@ -193,7 +192,7 @@ BigQueryエクスポートの場合Google Cloud Platformの以下の準備が必
 
 ```
 ファイルのダウンロード
-git clone https://github.com/takeya0x86/magicpod-analyzer.git
+git clone https://github.com/takeyaqa/magicpod-analyzer.git
 cd magicpod-analyzer
 
 # データセット作成

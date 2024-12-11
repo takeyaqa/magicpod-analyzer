@@ -6,10 +6,10 @@
   "bin": {
     "magicpod-analyzer": "./bin/run"
   },
-  "homepage": "https://github.com/takeya0x86/magicpod-analyzer#readme",
+  "homepage": "https://github.com/takeyaqa/magicpod-analyzer#readme",
   "license": "MIT",
   "main": "dist/index.js",
-  "repository": "takeya0x86/magicpod-analyzer",
+  "repository": "takeyaqa/magicpod-analyzer",
   "files": [
     "/bin",
     "/dist",
@@ -65,7 +65,7 @@
   "engines": {
     "node": ">=12.0.0"
   },
-  "bugs": "https://github.com/takeya0x86/magicpod-analyzer/issues",
+  "bugs": "https://github.com/takeyaqa/magicpod-analyzer/issues",
   "keywords": [
     "oclif",
     "MagicPod"
