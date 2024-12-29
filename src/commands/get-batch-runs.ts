@@ -14,6 +14,7 @@ export default class GetBatchRuns extends Command {
     config: Flags.string({description: 'Config file default: magicpod_analyzer.yaml', char: 'c'}),
     token: Flags.string({description: 'Access token for MagicPod API. You can also set this value via environment variable `MAGICPOD_TOKEN`', env: 'MAGICPOD_TOKEN', required: true}),
     debug: Flags.boolean({description: 'Enable debug mode. You can also set this value via environment variable `MAGICPOD_ANALYZER_DEBUG`', env: 'MAGICPOD_ANALYZER_DEBUG', char: 'd'}),
+    baseUrl: Flags.string({description: 'Base URL for MagicPod API. You can also set this value via environment variable `MAGICPOD_BASE_URL`', env: 'MAGICPOD_BASE_URL'}),
   }
 
   async run(): Promise<void> {
