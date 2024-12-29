@@ -62,9 +62,9 @@ export class MagicPodClient {
   private readonly logger: Logger
   private readonly debugMode: boolean
 
-  constructor(token: string, logger: Logger, debugMode = false) {
+  constructor(token: string, logger: Logger, debugMode = false, baseUrl = 'https://app.magicpod.com') {
     this.axios = axios.create({
-      baseURL: 'https://app.magicpod.com/api/v1.0',
+      baseURL: `${baseUrl}/api/v1.0`,
       headers: {
         Authorization: `Token ${token}`,
         Accept: 'application/json',
