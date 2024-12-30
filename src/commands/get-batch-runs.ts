@@ -31,7 +31,7 @@ export default class GetBatchRuns extends Command {
     const configFile = flags.config ?? 'magicpod_analyzer.yaml'
 
     const config = await loadConfig(configFile)
-    const runner = new MagicPodRunner(logger, config, flags.token, flags.debug)
+    const runner = new MagicPodRunner(logger, config, flags.token, flags.debug, flags.baseUrl)
     const result = await runner.run()
     if (result.error) {
       this.error(result.error, {exit: 1})
