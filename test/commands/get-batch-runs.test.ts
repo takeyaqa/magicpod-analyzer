@@ -1,26 +1,19 @@
-/* eslint-disable camelcase */
 import {expect, test} from '@oclif/test'
+
+const TOKEN_FOR_TEST = '4uKNEY5hE4w3WCxi'
 
 describe('get-batch-runs', () => {
   test
-  .nock('https://app.magicpod.com', api => {
-    api.get('/api/v1.0/DummyOrg/DummyPrj/batch-runs/?count=100')
-    .reply(200, {organization_name: 'DummyOrg', project_name: 'DummyPrj', batch_runs: []})
-  })
   .stdout()
-  .command(['get-batch-runs', '--token', 'abc', '-c', './test/magicpod_analyzer_test.yaml'])
+  .command(['get-batch-runs', '--token', TOKEN_FOR_TEST, '-c', './test/magicpod_analyzer_test.yaml', '--baseUrl', 'http://localhost:3000'])
   .exit(0)
   .it('Success', ctx => {
     expect(ctx.stdout).to.contain('INFO  [LocalStore]')
   })
 
   test
-  .nock('https://app.magicpod.com', api => {
-    api.get('/api/v1.0/DummyOrg/DummyPrj/batch-runs/?count=10')
-    .reply(200, {organization_name: 'DummyOrg', project_name: 'DummyPrj', batch_runs: []})
-  })
   .stdout()
-  .command(['get-batch-runs', '--token', 'abc', '-c', './test/magicpod_analyzer_test.yaml', '--debug'])
+  .command(['get-batch-runs', '--token', TOKEN_FOR_TEST, '-c', './test/magicpod_analyzer_test.yaml', '--debug', '--baseUrl', 'http://localhost:3000'])
   .exit(0)
   .it('Debug mode', ctx => {
     expect(ctx.stdout).to.contain('INFO  [NullStore] Detect DEBUG mode, skip saving lastRun.')

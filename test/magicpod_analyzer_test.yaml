@@ -1,6 +1,6 @@
 magicpod:
   projects:
-    - DummyOrg/DummyPrj
+    - FakeOrganization/FakeProject
   exporter:
     local:
       format: json

@@ -1,0 +1,12 @@
+services:
+  development:
+    image: mcr.microsoft.com/devcontainers/typescript-node:1-18-bookworm
+    volumes:
+      - ../..:/workspaces:cached
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+  fakepod:
+    image: ghcr.io/takeyaqa/fakepod:0.2.1
+    network_mode: service:development
