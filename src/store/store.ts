@@ -20,7 +20,8 @@ export class LastRunStore {
   private readonly store: Store
   private lastRun: LastRun
 
-  static async init(logger: Logger, config: LastRunStoreConfig, debugMode = false): Promise<LastRunStore> {
+  // eslint-disable-next-line  default-param-last
+  static async init(logger: Logger, config: LastRunStoreConfig, debugMode = false, baseUrl?: string): Promise<LastRunStore> {
     let store
     if (debugMode) {
       store = new NullStore(logger)
@@ -30,7 +31,7 @@ export class LastRunStore {
       store = new LocalStore(logger, (config as LocalLastRunStoreConfig).path)
     } else if (config.backend === 'gcs') {
       const _config = config as GCSLastRunStoreConfig
-      store = new GcsStore(logger, _config.project, _config.bucket, _config.path)
+      store = new GcsStore(logger, _config.project, _config.bucket, _config.path, baseUrl)
     } else {
       throw new Error(`Error: Unknown LastRunStore.backend type '${config.backend}'`)
     }
