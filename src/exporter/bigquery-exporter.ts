@@ -18,13 +18,13 @@ export class BigqueryExporter implements Exporter {
   private readonly table: string
   private readonly maxBadRecords: number
 
-  constructor(logger: Logger, config: BigqueryExporterConfig) {
+  constructor(logger: Logger, config: BigqueryExporterConfig, baseUrl?: string) {
     if (!config.project || !config.dataset) {
       throw new Error("Must need 'project', 'dataset' parameter in exporter.bigquery config.")
     }
 
     this.logger = logger.getChildLogger({name: BigqueryExporter.name})
-    this.bigquery = new BigQuery({projectId: config.project})
+    this.bigquery = new BigQuery({projectId: config.project, apiEndpoint: baseUrl})
     this.dataset = config.dataset
     const testReportTable = config.reports?.find(report => report.name === 'test_report')?.table
     if (!testReportTable) {

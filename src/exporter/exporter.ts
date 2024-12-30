@@ -11,7 +11,8 @@ export interface Exporter {
 export class CompositExporter implements Exporter {
   private readonly exporters: Exporter[]
 
-  constructor(logger: Logger, config?: ExporterConfig, debugMode = false) {
+  // eslint-disable-next-line default-param-last
+  constructor(logger: Logger, config?: ExporterConfig, debugMode = false, baseUrl?: string) {
     if (debugMode || !config) {
       this.exporters = [new LocalExporter(logger)]
       return
@@ -23,7 +24,7 @@ export class CompositExporter implements Exporter {
     }
 
     if (config.bigquery) {
-      this.exporters.push(new BigqueryExporter(logger, config.bigquery))
+      this.exporters.push(new BigqueryExporter(logger, config.bigquery, baseUrl))
     }
   }
 
