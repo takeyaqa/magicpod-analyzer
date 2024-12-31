@@ -7,7 +7,7 @@ import {teenyRequest} from 'teeny-request'
 
 const TOKEN_FOR_TEST = '4uKNEY5hE4w3WCxi'
 const MAGICPOD_FOR_TEST = 'http://localhost:3000'
-const GCS_FOR_TEST = 'http://localhost:4443'
+const GCS_FOR_TEST = process.env.GITHUB_ACTIONS ? 'https://localhost:4443' : 'http://localhost:4443'
 // eslint-disable-next-line unicorn/prefer-module
 const SCHEMA_PATH = path.join(__dirname, '..', '..', 'bigquery_schema', 'test_report.json')
 
