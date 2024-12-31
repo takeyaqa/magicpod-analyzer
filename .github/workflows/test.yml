@@ -16,6 +16,16 @@ jobs:
         image: ghcr.io/takeyaqa/fakepod:0.2.1
         ports:
           - 3000:3000
+      bigquery-emulator:
+        image: ghcr.io/goccy/bigquery-emulator:latest
+        env:
+          BIGQUERY_EMULATOR_PROJECT: fake-project
+        ports:
+          - 9050:9050
+      fake-gcs-server:
+        image: fsouza/fake-gcs-server:latest
+        ports:
+          - 4443:4443
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,3 +35,5 @@ jobs:
       - run: yarn install --network-timeout 600000
       - run: yarn build
       - run: yarn test
+        env:
+          BIGQUERY_EMULATOR_HOST: http://localhost:9050

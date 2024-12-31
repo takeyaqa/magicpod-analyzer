@@ -2,7 +2,13 @@ magicpod:
   projects:
     - FakeOrganization/FakeProject
   exporter:
-    local:
-      format: json
+    bigquery:
+      project: fake-project
+      dataset: fake-dataset
+      reports:
+        - name: test_report
+          table: test_report
   lastRunStore:
-    backend: local
+    backend: gcs
+    project: fake-project
+    bucket: fake-bucket

@@ -3,10 +3,22 @@ services:
     image: mcr.microsoft.com/devcontainers/typescript-node:1-18-bookworm
     volumes:
       - ../..:/workspaces:cached
-
-    # Overrides default command so things don't shut down after the process ends.
+    environment:
+      - BIGQUERY_EMULATOR_HOST=http://localhost:9050
     command: sleep infinity
 
   fakepod:
     image: ghcr.io/takeyaqa/fakepod:0.2.1
     network_mode: service:development
+
+  bigquery-emulator:
+    platform: linux/amd64
+    image: ghcr.io/goccy/bigquery-emulator:latest
+    environment:
+      - BIGQUERY_EMULATOR_PROJECT=fake-project
+    network_mode: service:development
+
+  fake-gcs-server:
+    image: fsouza/fake-gcs-server:latest
+    network_mode: service:development
+    entrypoint: ["/bin/fake-gcs-server", "-data", "/data", "-scheme", "http"]
