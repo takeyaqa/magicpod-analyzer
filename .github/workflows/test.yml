@@ -37,3 +37,4 @@ jobs:
       - run: yarn test
         env:
           BIGQUERY_EMULATOR_HOST: http://localhost:9050
+          ODE_TLS_REJECT_UNAUTHORIZE: 0
