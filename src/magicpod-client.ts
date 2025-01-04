@@ -2,7 +2,6 @@ import axios, {AxiosInstance} from 'axios'
 import {minBy} from 'lodash'
 import {Logger} from 'tslog'
 
-/* eslint-disable camelcase */
 type Status = 'not-running' | 'running' | 'succeeded' | 'failed' | 'aborted' | 'unresolved'
 
 export interface BatchRuns {
@@ -52,7 +51,6 @@ interface DataPattern {
   started_at: string
   finished_at: string
 }
-/* eslint-enable camelcase */
 
 const DEFAULT_COUNT = 100
 const DEBUG_COUNT = 10
@@ -84,9 +82,7 @@ export class MagicPodClient {
       })
       return request
     })
-    this.axios.interceptors.response.use(response => {
-      return response
-    }, error => {
+    this.axios.interceptors.response.use(response => response, error => {
       if (axios.isAxiosError(error)) {
         logger.error({
           message: error.message,
@@ -137,9 +133,7 @@ export class MagicPodClient {
   }
 
   private async retrieveDetailedBatchRuns(batchRuns: BatchRuns): Promise<BatchRuns> {
-    const connections = batchRuns.batch_runs.map(batchRun => {
-      return this.axios.get(`/${batchRuns.organization_name}/${batchRuns.project_name}/batch-run/${batchRun.batch_run_number}/`)
-    })
+    const connections = batchRuns.batch_runs.map(batchRun => this.axios.get(`/${batchRuns.organization_name}/${batchRuns.project_name}/batch-run/${batchRun.batch_run_number}/`))
     const resultList = await Promise.all(connections)
 
     /* eslint-disable camelcase */

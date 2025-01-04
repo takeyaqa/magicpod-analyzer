@@ -82,7 +82,7 @@ export class MagicPodAnalyzer {
       const name = testCaseResult.number ? `No.${testCaseResult.number}` : 'No.'
       return {
         classname: name,
-        name: name,
+        name,
         time: this.calcDuration(testCaseResult.started_at, testCaseResult.finished_at),
         successCount: testCaseResult.status === 'succeeded' ? 1 : 0,
         status: testCaseResult.status === 'succeeded' ? 'SUCCESS' : 'FAILURE',

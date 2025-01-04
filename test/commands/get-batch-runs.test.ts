@@ -1,14 +1,15 @@
-import * as fs from 'node:fs/promises'
-import * as path from 'node:path'
-import {expect, test} from '@oclif/test'
+/* eslint-disable @typescript-eslint/no-explicit-any, arrow-body-style, unicorn/prefer-module */
+
 import {BigQuery} from '@google-cloud/bigquery'
 import {Storage} from '@google-cloud/storage'
+import {expect, test} from '@oclif/test'
+import * as fs from 'node:fs/promises'
+import * as path from 'node:path'
 import {teenyRequest} from 'teeny-request'
 
 const TOKEN_FOR_TEST = '4uKNEY5hE4w3WCxi'
 const MAGICPOD_FOR_TEST = 'http://localhost:3000'
 const GCS_FOR_TEST = process.env.GITHUB_ACTIONS ? 'https://localhost:4443' : 'http://localhost:4443'
-// eslint-disable-next-line unicorn/prefer-module
 const SCHEMA_PATH = path.join(__dirname, '..', '..', 'bigquery_schema', 'test_report.json')
 
 describe('get-batch-runs', () => {
@@ -146,3 +147,5 @@ describe('get-batch-runs', () => {
   .catch(/Missing required flag token/s)
   .it('Error without token')
 })
+
+/* eslint-enable @typescript-eslint/no-explicit-any, arrow-body-style, unicorn/prefer-module */

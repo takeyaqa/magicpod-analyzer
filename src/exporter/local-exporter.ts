@@ -1,7 +1,8 @@
+import * as dayjs from 'dayjs'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
-import * as dayjs from 'dayjs'
 import {Logger} from 'tslog'
+
 import {TestReport} from '../magicpod-analyzer'
 import {LocalExporterConfig} from '../magicpod-config'
 import {Exporter} from './exporter'
@@ -28,10 +29,13 @@ export class LocalExporter implements Exporter {
 
   private formatJson(testReports: TestReport[]): string {
     switch (this.format) {
-    case 'json':
-      return JSON.stringify(testReports, null, 2)
-    case 'json_lines':
-      return testReports.map(report => JSON.stringify(report)).join('\n')
+      case 'json': {
+        return JSON.stringify(testReports, null, 2)
+      }
+
+      case 'json_lines': {
+        return testReports.map(report => JSON.stringify(report)).join('\n')
+      }
     }
   }
 }

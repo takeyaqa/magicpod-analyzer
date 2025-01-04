@@ -1,11 +1,12 @@
+import {BigQuery} from '@google-cloud/bigquery'
 import * as crypto from 'node:crypto'
 import * as fs from 'node:fs/promises'
 import * as os from 'node:os'
 import * as path from 'node:path'
-import {BigQuery} from '@google-cloud/bigquery'
 import {Logger} from 'tslog'
-import {BigqueryExporterConfig} from '../magicpod-config'
+
 import {TestReport} from '../magicpod-analyzer'
+import {BigqueryExporterConfig} from '../magicpod-config'
 import {Exporter} from './exporter'
 
 // eslint-disable-next-line unicorn/prefer-module

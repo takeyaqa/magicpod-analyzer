@@ -1,6 +1,7 @@
-import * as path from 'node:path'
 import {File, Storage} from '@google-cloud/storage'
+import * as path from 'node:path'
 import {Logger} from 'tslog'
+
 import {LastRun, Store} from './store'
 
 export class GcsStore implements Store {
@@ -18,7 +19,7 @@ export class GcsStore implements Store {
 
     this.logger = logger.getChildLogger({name: GcsStore.name})
 
-    const storage = new Storage({projectId: projectId, apiEndpoint: baseUrl})
+    const storage = new Storage({projectId, apiEndpoint: baseUrl})
     this.file = storage.bucket(bucket).file(fp)
     this.gcsPath = `gs://${bucket}/${fp}`
   }

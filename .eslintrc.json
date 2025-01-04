@@ -1,0 +1,10 @@
+{
+  "extends": ["oclif", "oclif-typescript", "prettier"],
+  "rules": {
+    "perfectionist/sort-classes": "off",
+    "perfectionist/sort-interfaces": "off",
+    "perfectionist/sort-object-types": "off",
+    "perfectionist/sort-objects": "off",
+    "perfectionist/sort-union-types": "off"
+  }
+}

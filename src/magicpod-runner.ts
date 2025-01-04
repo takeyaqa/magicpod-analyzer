@@ -1,11 +1,12 @@
 /* eslint-disable no-await-in-loop */
 import {maxBy} from 'lodash'
 import {Logger} from 'tslog'
-import {MagicPodConfig} from './magicpod-config'
-import {MagicPodClient} from './magicpod-client'
-import {MagicPodAnalyzer, TestReport} from './magicpod-analyzer'
-import {LastRunStore} from './store/store'
+
 import {CompositExporter} from './exporter/exporter'
+import {MagicPodAnalyzer, TestReport} from './magicpod-analyzer'
+import {MagicPodClient} from './magicpod-client'
+import {MagicPodConfig} from './magicpod-config'
+import {LastRunStore} from './store/store'
 
 interface Result {
   status: string
@@ -22,7 +23,7 @@ export class MagicPodRunner {
   private readonly gcsBaseUrl?: string
   private store?: LastRunStore
 
-  // eslint-disable-next-line max-params, default-param-last
+  // eslint-disable-next-line max-params
   constructor(logger: Logger, config: MagicPodConfig, token = '', debugMode = false, baseUrl = 'https://app.magicpod.com', bigqueryBaseUrl?: string, gcsBaseUrl?: string) {
     this.logger = logger.getChildLogger({name: MagicPodRunner.name})
     this.config = config
