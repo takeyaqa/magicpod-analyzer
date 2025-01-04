@@ -1,5 +1,6 @@
 import {Command, Flags} from '@oclif/core'
 import {Logger} from 'tslog'
+
 import {loadConfig} from '../magicpod-config'
 import {MagicPodRunner} from '../magicpod-runner'
 

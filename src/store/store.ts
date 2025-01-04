@@ -1,8 +1,9 @@
 import {Logger} from 'tslog'
+
+import {GCSLastRunStoreConfig, LastRunStoreConfig, LocalLastRunStoreConfig} from '../magicpod-config'
 import {GcsStore} from './gcs-store'
 import {LocalStore} from './local-store'
 import {NullStore} from './null-store'
-import {GCSLastRunStoreConfig, LastRunStoreConfig, LocalLastRunStoreConfig} from '../magicpod-config'
 
 export interface LastRun {
   [repo: string]: {
@@ -20,7 +21,6 @@ export class LastRunStore {
   private readonly store: Store
   private lastRun: LastRun
 
-  // eslint-disable-next-line  default-param-last
   static async init(logger: Logger, config: LastRunStoreConfig, debugMode = false, baseUrl?: string): Promise<LastRunStore> {
     let store
     if (debugMode) {

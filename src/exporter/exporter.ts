@@ -1,8 +1,9 @@
 import {Logger} from 'tslog'
-import {BigqueryExporter} from './bigquery-exporter'
-import {LocalExporter} from './local-exporter'
+
 import {TestReport} from '../magicpod-analyzer'
 import {ExporterConfig} from '../magicpod-config'
+import {BigqueryExporter} from './bigquery-exporter'
+import {LocalExporter} from './local-exporter'
 
 export interface Exporter {
   exportTestReports(reports: TestReport[]): Promise<void>
@@ -11,7 +12,6 @@ export interface Exporter {
 export class CompositExporter implements Exporter {
   private readonly exporters: Exporter[]
 
-  // eslint-disable-next-line default-param-last
   constructor(logger: Logger, config?: ExporterConfig, debugMode = false, baseUrl?: string) {
     if (debugMode || !config) {
       this.exporters = [new LocalExporter(logger)]

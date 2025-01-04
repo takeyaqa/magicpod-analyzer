@@ -1,5 +1,5 @@
-import * as fs from 'node:fs/promises'
 import * as yaml from 'js-yaml'
+import * as fs from 'node:fs/promises'
 
 interface RawConfig {
   magicpod: {
@@ -62,13 +62,13 @@ export async function loadConfig(configPath: string): Promise<MagicPodConfig> {
   const projects = config.magicpod.projects.map(project => {
     const [organization, name] = project.split('/')
     return {
-      organization: organization,
-      name: name,
+      organization,
+      name,
       fullName: project,
     }
   })
   return {
-    projects: projects,
+    projects,
     exporter: config.magicpod.exporter,
     lastRunStore: config.magicpod.lastRunStore,
   }

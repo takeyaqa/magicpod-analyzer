@@ -1,6 +1,7 @@
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 import {Logger} from 'tslog'
+
 import {LastRun, Store} from './store'
 
 export class LocalStore implements Store {

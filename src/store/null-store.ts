@@ -1,4 +1,5 @@
 import {Logger} from 'tslog'
+
 import {LastRun, Store} from './store'
 
 export class NullStore implements Store {
