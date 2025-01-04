@@ -21,7 +21,7 @@ $ npm install -g magicpod-analyzer
 $ magicpod-analyzer COMMAND
 running command...
 $ magicpod-analyzer (--version)
-magicpod-analyzer/0.5.1 darwin-arm64 node-v18.16.0
+magicpod-analyzer/0.5.1 linux-arm64 node-v22.12.0
 $ magicpod-analyzer --help [COMMAND]
 USAGE
   $ magicpod-analyzer COMMAND

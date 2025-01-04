@@ -1,6 +1,6 @@
 services:
   development:
-    image: mcr.microsoft.com/devcontainers/typescript-node:1-18-bookworm
+    image: mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm
     volumes:
       - ../..:/workspaces:cached
     environment:
