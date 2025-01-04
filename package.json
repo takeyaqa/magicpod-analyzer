@@ -22,7 +22,7 @@
     "@google-cloud/storage": "^7.14.0",
     "@oclif/core": "^2",
     "@oclif/plugin-help": "^5",
-    "axios": "^1.4.0",
+    "axios": "^1.7.9",
     "dayjs": "^1.11.7",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
