@@ -1,0 +1,8 @@
+magicpod:
+  projects:
+    - FakeOrganization/FakeProject
+  exporter:
+    local:
+      outputDir: output
+  lastRunStore:
+    backend: local
