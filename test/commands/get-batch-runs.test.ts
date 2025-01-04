@@ -15,7 +15,7 @@ describe('get-batch-runs', () => {
   let storage: Storage
   let bigquery: BigQuery
 
-  before(async () => {
+  beforeEach(async () => {
     // monkey patch for teeny-request
     teenyRequest.defaults = defaults => {
       return (reqOpts, callback) => {
@@ -36,38 +36,108 @@ describe('get-batch-runs', () => {
     const schemaPath = path.resolve(SCHEMA_PATH)
     const schemaFile = await fs.readFile(schemaPath)
     const schema = JSON.parse(schemaFile.toString())
-    return dataset.createTable('test_report', {
+    await dataset.createTable('test_report', {
       schema: {fields: schema},
     })
   })
 
-  after(async () => {
+  afterEach(async () => {
     await storage.bucket('fake-bucket').deleteFiles({force: true})
     await storage.bucket('fake-bucket').delete()
-    return bigquery.dataset('fake-dataset').delete({force: true})
+    await bigquery.dataset('fake-dataset').delete({force: true})
+    await fs.rm('.magicpod_analyzer', {force: true, recursive: true})
+    await fs.rm('output', {force: true, recursive: true})
   })
 
   test
   .stdout()
-  .command(['get-batch-runs', '--token', TOKEN_FOR_TEST, '-c', './test/magicpod_analyzer_test.yaml', '--baseUrl', MAGICPOD_FOR_TEST, '--gcsBaseURL', GCS_FOR_TEST])
+  .command(['get-batch-runs', '--token', TOKEN_FOR_TEST, '-c', './test/magicpod_analyzer_test_gcs_bigquery.yaml', '--baseUrl', MAGICPOD_FOR_TEST, '--gcsBaseURL', GCS_FOR_TEST])
   .exit(0)
-  .it('Success', async ctx => {
+  .it('Success with GCS and BigQuery', async ctx => {
+    // Check stdout messesges
     expect(ctx.stdout).to.contain('INFO  [GcsStore]')
     expect(ctx.stdout).to.contain('INFO  [BigqueryExporter]')
+    expect(ctx.stdout).to.contain('INFO  [MagicPodRunner] Done execute \'magicpod\'. status: success')
+
+    // Check output exists on GCS and BigQuery
     const [rows] = await bigquery.dataset('fake-dataset').table('test_report').getRows()
     expect(rows).to.have.length(100)
     const lastRunFile = await storage.bucket('fake-bucket').file('ci_analyzer/last_run/magicpod.json').download()
     const lastRun = JSON.parse(lastRunFile.toString())
     expect(lastRun).to.have.property('FakeOrganization/FakeProject')
     expect(lastRun['FakeOrganization/FakeProject'].lastRun).to.equal(200)
+
+    // Check output does not exist on local
+    try {
+      await fs.access('output')
+      expect.fail('lastRun file should not be saved in GCS mode')
+    } catch (error: any) {
+      expect(error.message).to.match(/no such file or directory/)
+    }
+
+    try {
+      await fs.access(path.join('.magicpod_analyzer', 'last_run', 'magicpod.json'))
+      expect.fail('lastRun file should not be saved in GCS mode')
+    } catch (error: any) {
+      expect(error.message).to.match(/no such file or directory/)
+    }
   })
 
   test
   .stdout()
-  .command(['get-batch-runs', '--token', TOKEN_FOR_TEST, '-c', './test/magicpod_analyzer_test.yaml', '--debug', '--baseUrl', MAGICPOD_FOR_TEST, '--gcsBaseURL', GCS_FOR_TEST])
+  .command(['get-batch-runs', '--token', TOKEN_FOR_TEST, '-c', './test/magicpod_analyzer_test_local_local.yaml', '--baseUrl', MAGICPOD_FOR_TEST, '--gcsBaseURL', GCS_FOR_TEST])
   .exit(0)
-  .it('Debug mode', ctx => {
+  .it('Success with local and local', async ctx => {
+    // Check stdout messesges
+    expect(ctx.stdout).to.contain('INFO  [LocalStore]')
+    expect(ctx.stdout).to.contain('INFO  [MagicPodRunner] Done execute \'magicpod\'. status: success')
+
+    // Check output exists on local
+    const outputFiles = await fs.readdir('output')
+    const outputFile = await fs.readFile(path.join('output', outputFiles[0]), {encoding: 'utf8'})
+    const output = JSON.parse(outputFile)
+    expect(output).to.have.length(100)
+    const lastRunFile = await fs.readFile(path.join('.magicpod_analyzer', 'last_run', 'magicpod.json'), {encoding: 'utf8'})
+    const lastRun = JSON.parse(lastRunFile)
+    expect(lastRun).to.have.property('FakeOrganization/FakeProject')
+    expect(lastRun['FakeOrganization/FakeProject'].lastRun).to.equal(200)
+
+    // Check output does not exist on GCS and BigQuery
+    const [rows] = await bigquery.dataset('fake-dataset').table('test_report').getRows()
+    expect(rows).to.have.length(0)
+    const lastRunFileOnGcs = storage.bucket('fake-bucket').file('ci_analyzer/last_run/magicpod.json')
+    expect((await lastRunFileOnGcs.exists())[0]).to.be.false
+  })
+
+  test
+  .stdout()
+  .command(['get-batch-runs', '--token', TOKEN_FOR_TEST, '-c', './test/magicpod_analyzer_test_gcs_bigquery.yaml', '--debug', '--baseUrl', MAGICPOD_FOR_TEST, '--gcsBaseURL', GCS_FOR_TEST])
+  .exit(0)
+  .it('Debug mode', async ctx => {
+    // Check stdout messesges
+    expect(ctx.stdout).to.contain('INFO  [MagicPodRunner] --- Enable DEBUG mode ---')
+    expect(ctx.stdout).to.contain('INFO  [NullStore] Detect DEBUG mode, nothing is used instead.')
+    expect(ctx.stdout).to.contain('DEBUG [MagicPodClient]')
     expect(ctx.stdout).to.contain('INFO  [NullStore] Detect DEBUG mode, skip saving lastRun.')
+    expect(ctx.stdout).to.contain('INFO  [MagicPodRunner] Done execute \'magicpod\'. status: success')
+
+    // Check output exists on local but lastRun does not exist
+    const outputFiles = await fs.readdir(path.join('output'))
+    const outputFile = await fs.readFile(path.join('output', outputFiles[0]), {encoding: 'utf8'})
+    const output = JSON.parse(outputFile)
+    expect(output).to.have.length(10)
+    try {
+      await fs.access(path.join('.magicpod_analyzer', 'last_run', 'magicpod.json'))
+      expect.fail('lastRun file should not be saved in debug mode')
+    } catch (error: any) {
+      expect(error.message).to.match(/no such file or directory/)
+    }
+
+    // Check output does not exist on GCS and BigQuery
+    const [rows] = await bigquery.dataset('fake-dataset').table('test_report').getRows()
+    expect(rows).to.have.length(0)
+    const lastRunFileOnGcs = storage.bucket('fake-bucket').file('ci_analyzer/last_run/magicpod.json')
+    expect((await lastRunFileOnGcs.exists())[0]).to.be.false
   })
 
   test
