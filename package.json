@@ -14,14 +14,13 @@
     "/bin",
     "/dist",
     "/bigquery_schema",
-    "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
   "dependencies": {
     "@google-cloud/bigquery": "^6.2.1",
     "@google-cloud/storage": "^7.14.0",
-    "@oclif/core": "^2",
-    "@oclif/plugin-help": "^5",
+    "@oclif/core": "^3",
+    "@oclif/plugin-help": "^6",
     "axios": "^1.7.9",
     "dayjs": "^1.11.13",
     "js-yaml": "^4.1.0",
@@ -29,22 +28,23 @@
     "tslog": "^3.3.4"
   },
   "devDependencies": {
-    "@oclif/test": "^2.3.17",
+    "@oclif/prettier-config": "^0.2.1",
+    "@oclif/test": "^3",
     "@types/chai": "^4",
     "@types/js-yaml": "^4.0.9",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^16.18.25",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "^18",
     "chai": "^4",
-    "eslint": "^7.32.0",
-    "eslint-config-oclif": "^4",
-    "eslint-config-oclif-typescript": "^1.0.3",
-    "mocha": "^9",
-    "oclif": "^3",
+    "eslint": "^8.57.0",
+    "eslint-config-oclif": "^5",
+    "eslint-config-oclif-typescript": "^3",
+    "eslint-config-prettier": "^9.1.0",
+    "mocha": "^10",
+    "oclif": "^4",
     "shx": "^0.3.3",
     "teeny-request": "^8.0.0",
-    "ts-node": "^10.9.1",
-    "tslib": "^2.5.0",
-    "typescript": "^4.9.5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5"
   },
   "oclif": {
     "bin": "magicpod-analyzer",
@@ -56,15 +56,15 @@
   },
   "scripts": {
     "build": "shx rm -rf dist && tsc -b",
-    "lint": "eslint . --ext .ts --config .eslintrc",
+    "lint": "eslint . --ext .ts",
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "yarn lint",
-    "prepack": "yarn build && oclif manifest && oclif readme",
+    "prepack": "oclif manifest && oclif readme",
     "test": "mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif readme && git add README.md"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=18.0.0"
   },
   "bugs": "https://github.com/takeyaqa/magicpod-analyzer/issues",
   "keywords": [
