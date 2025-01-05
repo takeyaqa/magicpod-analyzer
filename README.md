@@ -4,7 +4,8 @@ magicpod-analyzer
 Export MagicPod test data for analyzing. Inspired by [CIAnalyzer](https://github.com/Kesin11/CIAnalyzer).
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![GitHub license](https://img.shields.io/github/license/oclif/hello-world)](https://github.com/takeyaqa/magicpod-analyzer/blob/main/LICENSE)
+[![Version](https://img.shields.io/npm/v/magicpod-analyzer.svg)](https://npmjs.org/package/magicpod-analyzer)
+[![Downloads/week](https://img.shields.io/npm/dw/magicpod-analyzer.svg)](https://npmjs.org/package/magicpod-analyzer)
 
 [日本語版はこちら](./README.ja.md)
 
