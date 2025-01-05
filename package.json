@@ -4,7 +4,7 @@
   "description": "Export MagicPod test data for analyzing.",
   "author": "Takeshi Kishi",
   "bin": {
-    "magicpod-analyzer": "./bin/run"
+    "magicpod-analyzer": "./bin/run.js"
   },
   "homepage": "https://github.com/takeyaqa/magicpod-analyzer#readme",
   "license": "MIT",
