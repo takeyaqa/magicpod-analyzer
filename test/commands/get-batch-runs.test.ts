@@ -67,7 +67,7 @@ describe('get-batch-runs', () => {
     const lastRun = JSON.parse(lastRunFile.toString())
     expect(lastRun).to.have.property('FakeOrganization/FakeProject')
     expect(lastRun['FakeOrganization/FakeProject'].lastRun).to.equal(200)
-    
+
     // Check output does not exist on local
     try {
       await fs.access('output')
@@ -75,7 +75,7 @@ describe('get-batch-runs', () => {
     } catch (error: any) {
       expect(error.message).to.match(/no such file or directory/)
     }
-    
+
     try {
       await fs.access(path.join('.magicpod_analyzer', 'last_run', 'magicpod.json'))
       expect.fail('lastRun file should not be saved in GCS mode')
