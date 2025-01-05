@@ -2,7 +2,8 @@
 
 import {BigQuery} from '@google-cloud/bigquery'
 import {Storage} from '@google-cloud/storage'
-import {expect, test} from '@oclif/test'
+import {runCommand} from '@oclif/test'
+import {expect} from 'chai'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 import {teenyRequest} from 'teeny-request'
@@ -50,15 +51,14 @@ describe('get-batch-runs', () => {
     await fs.rm('output', {force: true, recursive: true})
   })
 
-  test
-  .stdout()
-  .command(['get-batch-runs', '--token', TOKEN_FOR_TEST, '-c', './test/magicpod_analyzer_test_gcs_bigquery.yaml', '--baseUrl', MAGICPOD_FOR_TEST, '--gcsBaseURL', GCS_FOR_TEST])
-  .exit(0)
-  .it('Success with GCS and BigQuery', async ctx => {
+  it('Success with GCS and BigQuery', async () => {
+    // Run command
+    const {stdout} = await runCommand<{name: string}>(['get-batch-runs', '--token', TOKEN_FOR_TEST, '-c', './test/magicpod_analyzer_test_gcs_bigquery.yaml', '--baseUrl', MAGICPOD_FOR_TEST, '--gcsBaseURL', GCS_FOR_TEST])
+
     // Check stdout messesges
-    expect(ctx.stdout).to.contain('INFO  [GcsStore]')
-    expect(ctx.stdout).to.contain('INFO  [BigqueryExporter]')
-    expect(ctx.stdout).to.contain('INFO  [MagicPodRunner] Done execute \'magicpod\'. status: success')
+    expect(stdout).to.contain('INFO  [GcsStore]')
+    expect(stdout).to.contain('INFO  [BigqueryExporter]')
+    expect(stdout).to.contain('INFO  [MagicPodRunner] Done execute \'magicpod\'. status: success')
 
     // Check output exists on GCS and BigQuery
     const [rows] = await bigquery.dataset('fake-dataset').table('test_report').getRows()
@@ -84,14 +84,13 @@ describe('get-batch-runs', () => {
     }
   })
 
-  test
-  .stdout()
-  .command(['get-batch-runs', '--token', TOKEN_FOR_TEST, '-c', './test/magicpod_analyzer_test_local_local.yaml', '--baseUrl', MAGICPOD_FOR_TEST, '--gcsBaseURL', GCS_FOR_TEST])
-  .exit(0)
-  .it('Success with local and local', async ctx => {
+  it('Success with local and local', async () => {
+    // Run command
+    const {stdout} = await runCommand<{name: string}>(['get-batch-runs', '--token', TOKEN_FOR_TEST, '-c', './test/magicpod_analyzer_test_local_local.yaml', '--baseUrl', MAGICPOD_FOR_TEST, '--gcsBaseURL', GCS_FOR_TEST])
+
     // Check stdout messesges
-    expect(ctx.stdout).to.contain('INFO  [LocalStore]')
-    expect(ctx.stdout).to.contain('INFO  [MagicPodRunner] Done execute \'magicpod\'. status: success')
+    expect(stdout).to.contain('INFO  [LocalStore]')
+    expect(stdout).to.contain('INFO  [MagicPodRunner] Done execute \'magicpod\'. status: success')
 
     // Check output exists on local
     const outputFiles = await fs.readdir('output')
@@ -110,17 +109,16 @@ describe('get-batch-runs', () => {
     expect((await lastRunFileOnGcs.exists())[0]).to.be.false
   })
 
-  test
-  .stdout()
-  .command(['get-batch-runs', '--token', TOKEN_FOR_TEST, '-c', './test/magicpod_analyzer_test_gcs_bigquery.yaml', '--debug', '--baseUrl', MAGICPOD_FOR_TEST, '--gcsBaseURL', GCS_FOR_TEST])
-  .exit(0)
-  .it('Debug mode', async ctx => {
+  it('Debug mode', async () => {
+    // Run command
+    const {stdout} = await runCommand<{name: string}>(['get-batch-runs', '--token', TOKEN_FOR_TEST, '-c', './test/magicpod_analyzer_test_gcs_bigquery.yaml', '--debug', '--baseUrl', MAGICPOD_FOR_TEST, '--gcsBaseURL', GCS_FOR_TEST])
+
     // Check stdout messesges
-    expect(ctx.stdout).to.contain('INFO  [MagicPodRunner] --- Enable DEBUG mode ---')
-    expect(ctx.stdout).to.contain('INFO  [NullStore] Detect DEBUG mode, nothing is used instead.')
-    expect(ctx.stdout).to.contain('DEBUG [MagicPodClient]')
-    expect(ctx.stdout).to.contain('INFO  [NullStore] Detect DEBUG mode, skip saving lastRun.')
-    expect(ctx.stdout).to.contain('INFO  [MagicPodRunner] Done execute \'magicpod\'. status: success')
+    expect(stdout).to.contain('INFO  [MagicPodRunner] --- Enable DEBUG mode ---')
+    expect(stdout).to.contain('INFO  [NullStore] Detect DEBUG mode, nothing is used instead.')
+    expect(stdout).to.contain('DEBUG [MagicPodClient]')
+    expect(stdout).to.contain('INFO  [NullStore] Detect DEBUG mode, skip saving lastRun.')
+    expect(stdout).to.contain('INFO  [MagicPodRunner] Done execute \'magicpod\'. status: success')
 
     // Check output exists on local but lastRun does not exist
     const outputFiles = await fs.readdir(path.join('output'))
@@ -141,11 +139,13 @@ describe('get-batch-runs', () => {
     expect((await lastRunFileOnGcs.exists())[0]).to.be.false
   })
 
-  test
-  .stdout()
-  .command(['get-batch-runs'])
-  .catch(/Missing required flag token/s)
-  .it('Error without token')
+  it('Error without token', async () => {
+    // Run command
+    const {error} = await runCommand<{name: string}>(['get-batch-runs'])
+
+    // Check error messesges
+    expect(error?.message).to.match(/Missing required flag token/)
+  })
 })
 
 /* eslint-enable @typescript-eslint/no-explicit-any, arrow-body-style, unicorn/prefer-module */

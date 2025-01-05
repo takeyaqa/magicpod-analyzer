@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: ${{ matrix.node_version }}
           cache: yarn
-      - run: yarn install --network-timeout 600000
+      - run: yarn
       - run: yarn build
       - run: yarn test
         env:
