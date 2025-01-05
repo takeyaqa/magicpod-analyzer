@@ -34,7 +34,7 @@
     "@types/js-yaml": "^4.0.9",
     "@types/lodash": "^4.17.14",
     "@types/mocha": "^10",
-    "@types/node": "^18",
+    "@types/node": "^22",
     "chai": "^4",
     "eslint": "^8",
     "eslint-config-oclif": "^5",
