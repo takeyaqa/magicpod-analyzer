@@ -1,16 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, arrow-body-style, unicorn/prefer-module */
-
 import {BigQuery} from '@google-cloud/bigquery'
 import {Storage} from '@google-cloud/storage'
 import {runCommand} from '@oclif/test'
-import {expect} from 'chai'
+import * as chai from 'chai'
+import * as chaiAsPromised from 'chai-as-promised'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 import {teenyRequest} from 'teeny-request'
 
+chai.use(chaiAsPromised)
+
+const {expect} = chai
+
 const TOKEN_FOR_TEST = '4uKNEY5hE4w3WCxi'
 const MAGICPOD_FOR_TEST = 'http://localhost:3000'
 const GCS_FOR_TEST = process.env.GITHUB_ACTIONS ? 'https://localhost:4443' : 'http://localhost:4443'
+// eslint-disable-next-line unicorn/prefer-module
 const SCHEMA_PATH = path.join(__dirname, '..', '..', 'bigquery_schema', 'test_report.json')
 
 describe('get-batch-runs', () => {
@@ -19,24 +23,24 @@ describe('get-batch-runs', () => {
 
   beforeEach(async () => {
     // monkey patch for teeny-request
-    teenyRequest.defaults = defaults => {
-      return (reqOpts, callback) => {
-        reqOpts.headers = reqOpts.headers ?? {} // add this line for avoiding undefined error
-        const opts = {...defaults, ...reqOpts}
-        if (callback === undefined) {
-          return teenyRequest(opts)
-        }
-
-        teenyRequest(opts, callback)
+    teenyRequest.defaults = defaults => (reqOpts, callback) => {
+      reqOpts.headers = reqOpts.headers ?? {} // add this line for avoiding undefined error
+      const opts = {...defaults, ...reqOpts}
+      if (callback === undefined) {
+        return teenyRequest(opts)
       }
+
+      teenyRequest(opts, callback)
     }
 
+    // Create Fake GCS bucket
     storage = new Storage({projectId: 'fake-project', apiEndpoint: GCS_FOR_TEST})
     await storage.createBucket('fake-bucket')
+
+    // Create Fake BigQuery dataset
     bigquery = new BigQuery({projectId: 'fake-project'})
     const [dataset] = await bigquery.createDataset('fake-dataset')
-    const schemaPath = path.resolve(SCHEMA_PATH)
-    const schemaFile = await fs.readFile(schemaPath)
+    const schemaFile = await fs.readFile(path.resolve(SCHEMA_PATH))
     const schema = JSON.parse(schemaFile.toString())
     await dataset.createTable('test_report', {
       schema: {fields: schema},
@@ -44,9 +48,14 @@ describe('get-batch-runs', () => {
   })
 
   afterEach(async () => {
+    // Delete Fake GCS bucket
     await storage.bucket('fake-bucket').deleteFiles({force: true})
     await storage.bucket('fake-bucket').delete()
+
+    // Delete Fake BigQuery dataset
     await bigquery.dataset('fake-dataset').delete({force: true})
+
+    // Delete output directory
     await fs.rm('.magicpod_analyzer', {force: true, recursive: true})
     await fs.rm('output', {force: true, recursive: true})
   })
@@ -69,19 +78,8 @@ describe('get-batch-runs', () => {
     expect(lastRun['FakeOrganization/FakeProject'].lastRun).to.equal(200)
 
     // Check output does not exist on local
-    try {
-      await fs.access('output')
-      expect.fail('lastRun file should not be saved in GCS mode')
-    } catch (error: any) {
-      expect(error.message).to.match(/no such file or directory/)
-    }
-
-    try {
-      await fs.access(path.join('.magicpod_analyzer', 'last_run', 'magicpod.json'))
-      expect.fail('lastRun file should not be saved in GCS mode')
-    } catch (error: any) {
-      expect(error.message).to.match(/no such file or directory/)
-    }
+    expect(fs.access('output')).to.be.rejectedWith('no such file or directory')
+    expect(fs.access(path.join('.magicpod_analyzer', 'last_run', 'magicpod.json'))).to.be.rejectedWith('no such file or directory')
   })
 
   it('Success with local and local', async () => {
@@ -106,7 +104,8 @@ describe('get-batch-runs', () => {
     const [rows] = await bigquery.dataset('fake-dataset').table('test_report').getRows()
     expect(rows).to.have.length(0)
     const lastRunFileOnGcs = storage.bucket('fake-bucket').file('ci_analyzer/last_run/magicpod.json')
-    expect((await lastRunFileOnGcs.exists())[0]).to.be.false
+    const [existsLastRunFileOnGcs] = await lastRunFileOnGcs.exists()
+    expect(existsLastRunFileOnGcs).to.be.false
   })
 
   it('Debug mode', async () => {
@@ -125,27 +124,38 @@ describe('get-batch-runs', () => {
     const outputFile = await fs.readFile(path.join('output', outputFiles[0]), {encoding: 'utf8'})
     const output = JSON.parse(outputFile)
     expect(output).to.have.length(10)
-    try {
-      await fs.access(path.join('.magicpod_analyzer', 'last_run', 'magicpod.json'))
-      expect.fail('lastRun file should not be saved in debug mode')
-    } catch (error: any) {
-      expect(error.message).to.match(/no such file or directory/)
-    }
+    expect(fs.access(path.join('.magicpod_analyzer', 'last_run', 'magicpod.json'))).to.be.rejectedWith('no such file or directory')
 
     // Check output does not exist on GCS and BigQuery
     const [rows] = await bigquery.dataset('fake-dataset').table('test_report').getRows()
     expect(rows).to.have.length(0)
     const lastRunFileOnGcs = storage.bucket('fake-bucket').file('ci_analyzer/last_run/magicpod.json')
-    expect((await lastRunFileOnGcs.exists())[0]).to.be.false
+    const [existsLastRunFileOnGcs] = await lastRunFileOnGcs.exists()
+    expect(existsLastRunFileOnGcs).to.be.false
   })
 
-  it('Error without token', async () => {
+  it('Error without MagicPod token', async () => {
     // Run command
-    const {error} = await runCommand<{name: string}>(['get-batch-runs'])
+    const {error} = await runCommand<{name: string}>(['get-batch-runs', '-c', './test/magicpod_analyzer_test_gcs_bigquery.yaml', '--baseUrl', MAGICPOD_FOR_TEST, '--gcsBaseURL', GCS_FOR_TEST])
 
     // Check error messesges
     expect(error?.message).to.match(/Missing required flag token/)
   })
-})
 
-/* eslint-enable @typescript-eslint/no-explicit-any, arrow-body-style, unicorn/prefer-module */
+  it('Error invalid MagicPod token', async () => {
+    // Run command
+    const {stderr, error} = await runCommand<{name: string}>(['get-batch-runs', '--token', 'invalid', '-c', './test/magicpod_analyzer_test_gcs_bigquery.yaml', '--baseUrl', MAGICPOD_FOR_TEST, '--gcsBaseURL', GCS_FOR_TEST])
+
+    // Check error messesges
+    expect(stderr).to.contain('Unauthorized')
+    expect(error?.message).to.match(/Some error raised in 'FakeOrganization\/FakeProject', so it skipped\./)
+  })
+
+  it('Error config file not found', async () => {
+    // Run command
+    const {error} = await runCommand<{name: string}>(['get-batch-runs', '--token', TOKEN_FOR_TEST, '-c', './test/magicpod_analyzer_test_not_exist.yaml', '--baseUrl', MAGICPOD_FOR_TEST, '--gcsBaseURL', GCS_FOR_TEST])
+
+    // Check error messesges
+    expect(error?.message).to.match(/ENOENT: no such file or directory, open '\.\/test\/magicpod_analyzer_test_not_exist.yaml'/)
+  })
+})
