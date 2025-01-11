@@ -5,8 +5,9 @@ import {Logger} from 'tslog'
 import {LastRun, Store} from './store'
 
 export class LocalStore implements Store {
+  fs = fs
+  readonly filePath: string
   private readonly logger: Logger
-  private readonly filePath: string
 
   constructor(logger: Logger, filePath?: string) {
     this.logger = logger.getChildLogger({name: LocalStore.name})
@@ -17,9 +18,9 @@ export class LocalStore implements Store {
 
   async read(): Promise<LastRun> {
     try {
-      await fs.access(this.filePath)
+      await this.fs.access(this.filePath)
       this.logger.info(`${this.filePath} was successfully loaded.`)
-      return JSON.parse(await fs.readFile(this.filePath, {encoding: 'utf8'}))
+      return JSON.parse(await this.fs.readFile(this.filePath, {encoding: 'utf8'}))
     } catch {
       this.logger.info(`${this.filePath} was not found, empty object is used instead.`)
       return {}
@@ -33,8 +34,8 @@ export class LocalStore implements Store {
 
     // Write store file
     const outDir = path.dirname(this.filePath)
-    await fs.mkdir(outDir, {recursive: true})
-    await fs.writeFile(this.filePath, JSON.stringify(store, null, 2))
+    await this.fs.mkdir(outDir, {recursive: true})
+    await this.fs.writeFile(this.filePath, JSON.stringify(store, null, 2))
 
     this.logger.info(`${this.filePath} was successfully saved.`)
 

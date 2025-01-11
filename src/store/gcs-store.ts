@@ -5,9 +5,9 @@ import {Logger} from 'tslog'
 import {LastRun, Store} from './store'
 
 export class GcsStore implements Store {
+  file: File
+  readonly gcsPath: string
   private readonly logger: Logger
-  private readonly file: File
-  private readonly gcsPath: string
 
   // eslint-disable-next-line max-params
   constructor(logger: Logger, projectId?: string, bucket?: string, filePath?: string, baseUrl?: string) {

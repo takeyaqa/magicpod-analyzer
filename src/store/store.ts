@@ -18,7 +18,7 @@ export interface Store {
 }
 
 export class LastRunStore {
-  private readonly store: Store
+  readonly store: Store
   private lastRun: LastRun
 
   static async init(logger: Logger, config: LastRunStoreConfig, debugMode = false, baseUrl?: string): Promise<LastRunStore> {
