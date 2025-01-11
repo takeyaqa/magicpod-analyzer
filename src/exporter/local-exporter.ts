@@ -8,9 +8,10 @@ import {LocalExporterConfig} from '../magicpod-config'
 import {Exporter} from './exporter'
 
 export class LocalExporter implements Exporter {
+  fs = fs
+  readonly outDir: string
+  readonly format: 'json' | 'json_lines'
   private readonly logger: Logger
-  private readonly outDir: string
-  private readonly format: 'json' | 'json_lines'
 
   constructor(logger: Logger, config?: LocalExporterConfig) {
     const _outDir = config?.outDir ?? 'output'
@@ -20,10 +21,10 @@ export class LocalExporter implements Exporter {
   }
 
   async exportTestReports(testReports: TestReport[]): Promise<void> {
-    await fs.mkdir(this.outDir, {recursive: true})
+    await this.fs.mkdir(this.outDir, {recursive: true})
     const outputPath = path.join(this.outDir, `${dayjs().format('YYYYMMDD-HHmm')}-test-magicpod.json`)
     const formated = this.formatJson(testReports)
-    await fs.writeFile(outputPath, formated, {encoding: 'utf8'})
+    await this.fs.writeFile(outputPath, formated, {encoding: 'utf8'})
     this.logger.info(`Export test reports to ${outputPath}`)
   }
 
