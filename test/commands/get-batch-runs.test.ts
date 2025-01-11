@@ -78,8 +78,8 @@ describe('get-batch-runs', () => {
     expect(lastRun['FakeOrganization/FakeProject'].lastRun).to.equal(200)
 
     // Check output does not exist on local
-    expect(fs.access('output')).to.be.rejectedWith('no such file or directory')
-    expect(fs.access(path.join('.magicpod_analyzer', 'last_run', 'magicpod.json'))).to.be.rejectedWith('no such file or directory')
+    await expect(fs.access('output')).to.be.rejectedWith('no such file or directory')
+    await expect(fs.access(path.join('.magicpod_analyzer', 'last_run', 'magicpod.json'))).to.be.rejectedWith('no such file or directory')
   })
 
   it('Success with local and local', async () => {
@@ -124,7 +124,7 @@ describe('get-batch-runs', () => {
     const outputFile = await fs.readFile(path.join('output', outputFiles[0]), {encoding: 'utf8'})
     const output = JSON.parse(outputFile)
     expect(output).to.have.length(10)
-    expect(fs.access(path.join('.magicpod_analyzer', 'last_run', 'magicpod.json'))).to.be.rejectedWith('no such file or directory')
+    await expect(fs.access(path.join('.magicpod_analyzer', 'last_run', 'magicpod.json'))).to.be.rejectedWith('no such file or directory')
 
     // Check output does not exist on GCS and BigQuery
     const [rows] = await bigquery.dataset('fake-dataset').table('test_report').getRows()
