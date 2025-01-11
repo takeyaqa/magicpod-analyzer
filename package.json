@@ -25,7 +25,7 @@
     "dayjs": "^1.11.13",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
-    "tslog": "^3.3.4"
+    "tslog": "^4.9.3"
   },
   "devDependencies": {
     "@oclif/prettier-config": "^0.2.1",
