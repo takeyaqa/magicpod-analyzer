@@ -10,7 +10,7 @@ export interface Exporter {
 }
 
 export class CompositExporter implements Exporter {
-  private readonly exporters: Exporter[]
+  readonly exporters: Exporter[]
 
   constructor(logger: Logger, config?: ExporterConfig, debugMode = false, baseUrl?: string) {
     if (debugMode || !config) {

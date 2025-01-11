@@ -13,11 +13,11 @@ import {Exporter} from './exporter'
 const SCHEMA_PATH = path.join(__dirname, '..', '..', 'bigquery_schema', 'test_report.json')
 
 export class BigqueryExporter implements Exporter {
+  bigquery: BigQuery
+  readonly dataset: string
+  readonly table: string
+  readonly maxBadRecords: number
   private readonly logger: Logger
-  private readonly bigquery: BigQuery
-  private readonly dataset: string
-  private readonly table: string
-  private readonly maxBadRecords: number
 
   constructor(logger: Logger, config: BigqueryExporterConfig, baseUrl?: string) {
     if (!config.project || !config.dataset) {
