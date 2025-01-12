@@ -65,7 +65,12 @@ describe('gcs-store', () => {
   it('read with exists previous file', async () => {
     td.when(fileDouble.exists()).thenResolve([true])
     td.when(fileDouble.download()).thenResolve([
-      Buffer.from('{"FakeProject/FakeOrganization": {"lastRun": 1, "updatedAt": "2025-01-01T12:00:00.000Z"}}'),
+      Buffer.from(`{
+  "FakeProject/FakeOrganization": {
+    "lastRun": 1,
+    "updatedAt":"2025-01-01T12:00:00.000Z"
+  }
+}`),
     ])
     const lastRun = await store.read()
     expect(lastRun).to.be.deep.equal({
@@ -76,7 +81,12 @@ describe('gcs-store', () => {
   it('write', async () => {
     td.when(fileDouble.exists()).thenResolve([true])
     td.when(fileDouble.download()).thenResolve([
-      Buffer.from('{"FakeProject/FakeOrganization": {"lastRun": 1, "updatedAt": "2025-01-01T12:00:00.000Z"}}'),
+      Buffer.from(`{
+  "FakeProject/FakeOrganization": {
+    "lastRun": 1,
+    "updatedAt":"2025-01-01T12:00:00.000Z"
+  }
+}`),
     ])
     const lastRun = await store.write({
       'FakeProject/FakeOrganization': {lastRun: 2, updatedAt: new Date('2025-01-02T12:00:00.000Z')},
@@ -85,13 +95,12 @@ describe('gcs-store', () => {
       'FakeProject/FakeOrganization': {lastRun: 2, updatedAt: new Date('2025-01-02T12:00:00.000Z')},
     })
     td.verify(
-      fileDouble.save(
-        JSON.stringify(
-          {'FakeProject/FakeOrganization': {lastRun: 2, updatedAt: new Date('2025-01-02T12:00:00.000Z')}},
-          null,
-          2,
-        ),
-      ),
+      fileDouble.save(`{
+  "FakeProject/FakeOrganization": {
+    "lastRun": 2,
+    "updatedAt": "2025-01-02T12:00:00.000Z"
+  }
+}`),
     )
   })
 })
