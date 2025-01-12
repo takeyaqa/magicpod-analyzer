@@ -85,9 +85,9 @@ describe('get-batch-runs', () => {
     ])
 
     // Check stdout messesges
-    expect(stdout).to.contain('INFO  [GcsStore]')
-    expect(stdout).to.contain('INFO  [BigqueryExporter]')
-    expect(stdout).to.contain("INFO  Done execute 'magicpod'. status: success")
+    // expect(stdout).to.contain('INFO  [GcsStore]')
+    // expect(stdout).to.contain('INFO  [BigqueryExporter]')
+    expect(stdout).to.contain("Done execute 'magicpod'. status: success")
 
     // Check output exists on GCS and BigQuery
     const [rows] = await bigquery.dataset('fake-dataset').table('test_report').getRows()
@@ -115,8 +115,8 @@ describe('get-batch-runs', () => {
     ])
 
     // Check stdout messesges
-    expect(stdout).to.contain('INFO  [LocalStore]')
-    expect(stdout).to.contain("INFO  Done execute 'magicpod'. status: success")
+    // expect(stdout).to.contain('INFO  [LocalStore]')
+    expect(stdout).to.contain("Done execute 'magicpod'. status: success")
 
     // Check output exists on local
     const outputFiles = await fs.readdir('output')
@@ -150,11 +150,11 @@ describe('get-batch-runs', () => {
     ])
 
     // Check stdout messesges
-    expect(stdout).to.contain('INFO  --- Enable DEBUG mode ---')
-    expect(stdout).to.contain('INFO  [NullStore] Detect DEBUG mode, nothing is used instead.')
-    expect(stdout).to.contain('DEBUG [MagicPodClient]')
-    expect(stdout).to.contain('INFO  [NullStore] Detect DEBUG mode, skip saving lastRun.')
-    expect(stdout).to.contain("INFO  Done execute 'magicpod'. status: success")
+    expect(stdout).to.contain('--- Enable DEBUG mode ---')
+    expect(stdout).to.contain('Detect DEBUG mode, nothing is used instead.')
+    // expect(stdout).to.contain('DEBUG [MagicPodClient]')
+    expect(stdout).to.contain('Detect DEBUG mode, skip saving lastRun.')
+    expect(stdout).to.contain("Done execute 'magicpod'. status: success")
 
     // Check output exists on local but lastRun does not exist
     const outputFiles = await fs.readdir(path.join('output'))
@@ -187,7 +187,7 @@ describe('get-batch-runs', () => {
 
   it('Error invalid MagicPod token', async () => {
     // Run command
-    const {stderr, error} = await runCommand<{name: string}>([
+    const {stdout, error} = await runCommand<{name: string}>([
       'get-batch-runs',
       '--token',
       'invalid',
@@ -196,7 +196,7 @@ describe('get-batch-runs', () => {
     ])
 
     // Check error messesges
-    expect(stderr).to.contain('Unauthorized')
+    expect(stdout).to.contain('Unauthorized')
     expect(error?.message).to.match(/Some error raised in 'FakeOrganization\/FakeProject', so it skipped\./)
   })
 

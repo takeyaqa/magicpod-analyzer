@@ -2,7 +2,6 @@
 import * as chai from 'chai'
 import * as chaiAsPromised from 'chai-as-promised'
 import * as nock from 'nock'
-import {Logger} from 'tslog'
 
 import {MagicPodClient} from '../src/magicpod-client'
 
@@ -19,7 +18,7 @@ describe('magicpod-client', () => {
   beforeEach(async () => {
     nock.disableNetConnect()
     scope = nock('https://app.magicpod.com').matchHeader('Authorization', `Token ${TOKEN_FOR_TEST}`)
-    magicPodClient = new MagicPodClient(TOKEN_FOR_TEST, new Logger())
+    magicPodClient = new MagicPodClient(TOKEN_FOR_TEST)
   })
 
   afterEach(async () => {
@@ -30,7 +29,7 @@ describe('magicpod-client', () => {
 
   it('invalid token', async () => {
     scope = nock('https://app.magicpod.com').get('/api/v1.0/FakeOrganization/FakeProject/batch-runs/').reply(200)
-    const client = new MagicPodClient(`Token ${TOKEN_FOR_TEST}`, new Logger())
+    const client = new MagicPodClient(`Token ${TOKEN_FOR_TEST}`)
     await expect(client.getBatchRuns('FakeOrganization', 'FakeProject')).to.be.rejectedWith(
       'Nock: No match for request',
     )
@@ -795,7 +794,7 @@ describe('magicpod-client', () => {
         },
         url: 'https://app.fakepod.example.com/FakeOrganization/FakeProject/batch-run/199/',
       })
-    const magicPodClient = new MagicPodClient(TOKEN_FOR_TEST, new Logger(), true)
+    const magicPodClient = new MagicPodClient(TOKEN_FOR_TEST, true)
     const batchRuns = await magicPodClient.getBatchRuns('FakeOrganization', 'FakeProject')
     expect(scope.isDone()).to.be.true
     expect(batchRuns).to.be.deep.equal({

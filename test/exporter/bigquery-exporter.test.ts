@@ -4,7 +4,6 @@ import * as chaiAsPromised from 'chai-as-promised'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 import * as td from 'testdouble'
-import {Logger} from 'tslog'
 
 import {BigqueryExporter} from '../../src/exporter/bigquery-exporter'
 
@@ -26,7 +25,7 @@ describe('bigquery-exporter', () => {
     bigqueryDouble = td.object<BigQuery>()
     datasetDouble = td.object<Dataset>()
     tableDouble = td.object<Table>()
-    exporter = new BigqueryExporter(new Logger(), {
+    exporter = new BigqueryExporter({
       project: 'fake-project',
       dataset: 'fake-dataset',
       reports: [{name: 'test_report', table: 'test_report'}],
@@ -44,18 +43,18 @@ describe('bigquery-exporter', () => {
   })
 
   it('initialize error', async () => {
-    expect(() => new BigqueryExporter(new Logger(), {})).to.throw(
+    expect(() => new BigqueryExporter({})).to.throw(
       "Must need 'project', 'dataset' parameter in exporter.bigquery config.",
     )
     expect(
       () =>
-        new BigqueryExporter(new Logger(), {
+        new BigqueryExporter({
           reports: [{name: 'test_report', table: 'test_report'}],
         }),
     ).to.throw("Must need 'project', 'dataset' parameter in exporter.bigquery config.")
     expect(
       () =>
-        new BigqueryExporter(new Logger(), {
+        new BigqueryExporter({
           project: 'fake-project',
           dataset: 'fake-dataset',
         }),
@@ -63,7 +62,7 @@ describe('bigquery-exporter', () => {
   })
 
   it('initialize', async () => {
-    const exporter = new BigqueryExporter(new Logger(), {
+    const exporter = new BigqueryExporter({
       project: 'fake-project',
       dataset: 'fake-dataset',
       reports: [{name: 'test_report', table: 'test_report'}],

@@ -1,7 +1,7 @@
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
-import {Logger} from 'tslog'
 
+import {Logger, NullLogger} from '../util'
 import {LastRun, Store} from './store'
 
 export class LocalStore implements Store {
@@ -9,8 +9,8 @@ export class LocalStore implements Store {
   readonly filePath: string
   private readonly logger: Logger
 
-  constructor(logger: Logger, filePath?: string) {
-    this.logger = logger.getChildLogger({name: LocalStore.name})
+  constructor(filePath?: string, logger: Logger = new NullLogger()) {
+    this.logger = logger
 
     const _filePath = filePath ?? path.join('.magicpod_analyzer', 'last_run', 'magicpod.json')
     this.filePath = path.isAbsolute(_filePath) ? _filePath : path.resolve(process.cwd(), _filePath)
@@ -19,10 +19,10 @@ export class LocalStore implements Store {
   async read(): Promise<LastRun> {
     try {
       await this.fs.access(this.filePath)
-      this.logger.info(`${this.filePath} was successfully loaded.`)
+      this.logger.log(`${this.filePath} was successfully loaded.`)
       return JSON.parse(await this.fs.readFile(this.filePath, {encoding: 'utf8'}))
     } catch {
-      this.logger.info(`${this.filePath} was not found, empty object is used instead.`)
+      this.logger.log(`${this.filePath} was not found, empty object is used instead.`)
       return {}
     }
   }
@@ -37,7 +37,7 @@ export class LocalStore implements Store {
     await this.fs.mkdir(outDir, {recursive: true})
     await this.fs.writeFile(this.filePath, JSON.stringify(store, null, 2))
 
-    this.logger.info(`${this.filePath} was successfully saved.`)
+    this.logger.log(`${this.filePath} was successfully saved.`)
 
     return store
   }

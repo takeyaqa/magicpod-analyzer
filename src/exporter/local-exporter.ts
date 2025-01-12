@@ -1,9 +1,9 @@
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
-import {Logger} from 'tslog'
 
 import {TestReport} from '../magicpod-analyzer'
 import {LocalExporterConfig} from '../magicpod-config'
+import {Logger, NullLogger} from '../util'
 import {Exporter} from './exporter'
 
 export class LocalExporter implements Exporter {
@@ -12,11 +12,11 @@ export class LocalExporter implements Exporter {
   readonly format: 'json' | 'json_lines'
   private readonly logger: Logger
 
-  constructor(logger: Logger, config?: LocalExporterConfig) {
+  constructor(config?: LocalExporterConfig, logger: Logger = new NullLogger()) {
     const _outDir = config?.outDir ?? 'output'
     this.outDir = path.isAbsolute(_outDir) ? _outDir : path.resolve(process.cwd(), _outDir)
     this.format = config?.format ?? 'json'
-    this.logger = logger.getChildLogger({name: LocalExporter.name})
+    this.logger = logger
   }
 
   async exportTestReports(testReports: TestReport[]): Promise<void> {
@@ -24,7 +24,7 @@ export class LocalExporter implements Exporter {
     const outputPath = path.join(this.outDir, this.generateOutputFileName())
     const formated = this.formatJson(testReports)
     await this.fs.writeFile(outputPath, formated, {encoding: 'utf8'})
-    this.logger.info(`Export test reports to ${outputPath}`)
+    this.logger.log(`Export test reports to ${outputPath}`)
   }
 
   private formatJson(testReports: TestReport[]): string {
@@ -45,7 +45,7 @@ export class LocalExporter implements Exporter {
     const month = (now.getMonth() + 1).toString().padStart(2, '0')
     const date = now.getDate().toString().padStart(2, '0')
     const hour = now.getHours().toString().padStart(2, '0')
-    const minutes  = now.getMinutes().toString().padStart(2, '0')
+    const minutes = now.getMinutes().toString().padStart(2, '0')
     return `${fullYear}${month}${date}-${hour}${minutes}-test-magicpod.json`
   }
 }

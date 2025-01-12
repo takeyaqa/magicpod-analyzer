@@ -1,6 +1,4 @@
-import {Logger} from 'tslog'
-
-import {minBy} from './util'
+import {Logger, NullLogger, minBy} from './util'
 
 type Status = 'not-running' | 'running' | 'succeeded' | 'failed' | 'aborted' | 'unresolved'
 
@@ -61,14 +59,14 @@ export class MagicPodClient {
   private readonly logger: Logger
   private readonly debugMode: boolean
 
-  constructor(token: string, logger: Logger, debugMode = false) {
+  constructor(token: string, debugMode = false, logger: Logger = new NullLogger()) {
     const baseUrl = process.env.MAGICPOD_EMULATOR_HOST ?? 'https://app.magicpod.com'
     this.baseUrl = `${baseUrl}/api/v1.0`
     this.headers = {
       Authorization: `Token ${token}`,
       Accept: 'application/json',
     }
-    this.logger = logger.getChildLogger({name: MagicPodClient.name})
+    this.logger = logger
     this.debugMode = debugMode
   }
 
@@ -124,7 +122,10 @@ export class MagicPodClient {
   }
 
   private async fetchWithLogging(request: Request): Promise<Response> {
-    this.printDebugRequest(request)
+    if (this.debugMode) {
+      this.printDebugRequest(request)
+    }
+
     const response = await fetch(request)
     if (!response.ok) {
       const message = this.printErrorResponse(request, response)
@@ -136,8 +137,8 @@ export class MagicPodClient {
 
   private printDebugRequest(request: Request): void {
     const requestUrl = new URL(request.url)
-    this.logger.debug(`${request.method} ${requestUrl.pathname}${requestUrl.search}`)
-    this.logger.debug('request', {
+    this.logger.log(`${request.method} ${requestUrl.pathname}${requestUrl.search}`)
+    this.logger.log('request', {
       method: request.method,
       origin: requestUrl.origin,
       path: `${requestUrl.pathname}${requestUrl.search}`,
@@ -148,8 +149,7 @@ export class MagicPodClient {
     const requestUrl = new URL(request.url)
     const responseUrl = new URL(response.url)
     const message = `Request failed with status code ${response.status}`
-    this.logger.error({
-      message,
+    this.logger.log(message, {
       request: {
         method: request.method,
         origin: requestUrl.origin,

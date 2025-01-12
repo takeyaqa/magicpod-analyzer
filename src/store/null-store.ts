@@ -1,21 +1,20 @@
-import {Logger} from 'tslog'
-
+import {Logger, NullLogger} from '../util'
 import {LastRun, Store} from './store'
 
 export class NullStore implements Store {
   private readonly logger: Logger
 
-  constructor(logger: Logger) {
-    this.logger = logger.getChildLogger({name: NullStore.name})
+  constructor(logger: Logger = new NullLogger()) {
+    this.logger = logger
   }
 
   async read(): Promise<LastRun> {
-    this.logger.info('Detect DEBUG mode, nothing is used instead.')
+    this.logger.log('Detect DEBUG mode, nothing is used instead.')
     return {}
   }
 
   async write(_store: LastRun): Promise<LastRun> {
-    this.logger.info('Detect DEBUG mode, skip saving lastRun.')
+    this.logger.log('Detect DEBUG mode, skip saving lastRun.')
     return {}
   }
 }

@@ -1,6 +1,5 @@
-import {Logger} from 'tslog'
-
 import {GCSLastRunStoreConfig, LastRunStoreConfig, LocalLastRunStoreConfig} from '../magicpod-config'
+import {Logger, NullLogger} from '../util'
 import {GcsStore} from './gcs-store'
 import {LocalStore} from './local-store'
 import {NullStore} from './null-store'
@@ -21,17 +20,21 @@ export class LastRunStore {
   readonly store: Store
   private lastRun: LastRun
 
-  static async init(logger: Logger, config: LastRunStoreConfig, debugMode = false): Promise<LastRunStore> {
+  static async init(
+    config: LastRunStoreConfig,
+    debugMode = false,
+    logger: Logger = new NullLogger(),
+  ): Promise<LastRunStore> {
     let store
     if (debugMode) {
       store = new NullStore(logger)
     } else if (!config) {
-      store = new LocalStore(logger)
+      store = new LocalStore(undefined, logger)
     } else if (config.backend === 'local') {
-      store = new LocalStore(logger, (config as LocalLastRunStoreConfig).path)
+      store = new LocalStore((config as LocalLastRunStoreConfig).path, logger)
     } else if (config.backend === 'gcs') {
       const _config = config as GCSLastRunStoreConfig
-      store = new GcsStore(logger, _config.project, _config.bucket, _config.path)
+      store = new GcsStore(_config.project, _config.bucket, _config.path, logger)
     } else {
       throw new Error(`Error: Unknown LastRunStore.backend type '${config.backend}'`)
     }
