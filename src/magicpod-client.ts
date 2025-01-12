@@ -1,5 +1,4 @@
 import axios, {AxiosInstance} from 'axios'
-import {minBy} from 'lodash'
 import {Logger} from 'tslog'
 
 type Status = 'not-running' | 'running' | 'succeeded' | 'failed' | 'aborted' | 'unresolved'
@@ -127,9 +126,9 @@ export class MagicPodClient {
     const batchRuns = res.data as BatchRuns
 
     // Cut running data
-    const firstInprogress = minBy(
+    const firstInprogress = this.minBy(
       batchRuns.batch_runs.filter((batchRun) => batchRun.status === 'running' || batchRun.status === 'unresolved'),
-      'batch_run_number',
+      (batchRun) => batchRun.batch_run_number,
     )
     if (firstInprogress) {
       // eslint-disable-next-line camelcase
@@ -156,5 +155,10 @@ export class MagicPodClient {
       batch_runs: resultList.map((res) => res.data as BatchRun),
     }
     /* eslint-enable camelcase */
+  }
+
+  private minBy<T>(collection: T[], iteratee: (item: T) => number): T | undefined {
+    const min = Math.min(...collection.map((item) => iteratee(item)))
+    return collection.find((item) => iteratee(item) === min)
   }
 }

@@ -1,5 +1,4 @@
 /* eslint-disable no-await-in-loop */
-import {maxBy} from 'lodash'
 import {Logger} from 'tslog'
 
 import {CompositExporter} from './exporter/exporter'
@@ -63,7 +62,7 @@ export class MagicPodRunner {
 
         // store
         if (reports.length > 0) {
-          const lastRunReport = maxBy(reports, 'buildNumber')
+          const lastRunReport = this.maxBy(reports, (report) => report.buildNumber)
           if (lastRunReport) {
             this.store.setLastRun(project.fullName, lastRunReport.buildNumber)
           }
@@ -86,5 +85,10 @@ export class MagicPodRunner {
     await this.store.save()
     this.logger.info(`Done execute 'magicpod'. status: ${result.status}`)
     return result
+  }
+
+  private maxBy<T>(collection: T[], iteratee: (item: T) => number): T | undefined {
+    const max = Math.max(...collection.map((item) => iteratee(item)))
+    return collection.find((item) => iteratee(item) === max)
   }
 }
