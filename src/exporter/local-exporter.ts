@@ -1,4 +1,3 @@
-import * as dayjs from 'dayjs'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 import {Logger} from 'tslog'
@@ -22,7 +21,7 @@ export class LocalExporter implements Exporter {
 
   async exportTestReports(testReports: TestReport[]): Promise<void> {
     await this.fs.mkdir(this.outDir, {recursive: true})
-    const outputPath = path.join(this.outDir, `${dayjs().format('YYYYMMDD-HHmm')}-test-magicpod.json`)
+    const outputPath = path.join(this.outDir, this.generateOutputFileName())
     const formated = this.formatJson(testReports)
     await this.fs.writeFile(outputPath, formated, {encoding: 'utf8'})
     this.logger.info(`Export test reports to ${outputPath}`)
@@ -38,5 +37,15 @@ export class LocalExporter implements Exporter {
         return testReports.map((report) => JSON.stringify(report)).join('\n')
       }
     }
+  }
+
+  private generateOutputFileName(): string {
+    const now = new Date()
+    const fullYear = now.getFullYear().toString().padStart(4, '0')
+    const month = (now.getMonth() + 1).toString().padStart(2, '0')
+    const date = now.getDate().toString().padStart(2, '0')
+    const hour = now.getHours().toString().padStart(2, '0')
+    const minutes  = now.getMinutes().toString().padStart(2, '0')
+    return `${fullYear}${month}${date}-${hour}${minutes}-test-magicpod.json`
   }
 }
