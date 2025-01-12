@@ -22,15 +22,14 @@
     "@oclif/core": "^4",
     "@oclif/plugin-help": "^6",
     "axios": "^1.7.9",
-    "js-yaml": "^4.1.0",
-    "tslog": "^3.3.4"
+    "tslog": "^3.3.4",
+    "yaml": "^2.7.0"
   },
   "devDependencies": {
     "@oclif/prettier-config": "^0.2.1",
     "@oclif/test": "^4",
     "@types/chai": "^4",
     "@types/chai-as-promised": "^7.1.8",
-    "@types/js-yaml": "^4.0.9",
     "@types/mocha": "^10",
     "@types/node": "^18",
     "chai": "^4",
