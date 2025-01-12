@@ -43,9 +43,12 @@ describe('local-store', () => {
   })
 
   it('read with exists previous file', async () => {
-    td.when(fsDouble.readFile(store.filePath, {encoding: 'utf8'})).thenResolve(
-      '{"FakeProject/FakeOrganization": {"lastRun": 1, "updatedAt": "2025-01-01T12:00:00.000Z"}}',
-    )
+    td.when(fsDouble.readFile(store.filePath, {encoding: 'utf8'})).thenResolve(`{
+  "FakeProject/FakeOrganization": {
+    "lastRun": 1,
+    "updatedAt":"2025-01-01T12:00:00.000Z"
+  }
+}`)
     const lastRun = await store.read()
     expect(lastRun).to.be.deep.equal({
       'FakeProject/FakeOrganization': {lastRun: 1, updatedAt: '2025-01-01T12:00:00.000Z'},
@@ -53,9 +56,12 @@ describe('local-store', () => {
   })
 
   it('write', async () => {
-    td.when(fsDouble.readFile(store.filePath, {encoding: 'utf8'})).thenResolve(
-      '{"FakeProject/FakeOrganization": {"lastRun": 1, "updatedAt": "2025-01-01T12:00:00.000Z"}}',
-    )
+    td.when(fsDouble.readFile(store.filePath, {encoding: 'utf8'})).thenResolve(`{
+  "FakeProject/FakeOrganization": {
+    "lastRun": 1,
+    "updatedAt":"2025-01-01T12:00:00.000Z"
+  }
+}`)
     const lastRun = await store.write({
       'FakeProject/FakeOrganization': {lastRun: 2, updatedAt: new Date('2025-01-02T12:00:00.000Z')},
     })
@@ -64,12 +70,13 @@ describe('local-store', () => {
     })
     td.verify(
       fsDouble.writeFile(
-        store.filePath,
-        JSON.stringify(
-          {'FakeProject/FakeOrganization': {lastRun: 2, updatedAt: new Date('2025-01-02T12:00:00.000Z')}},
-          null,
-          2,
-        ),
+        path.join(process.cwd(), '.magicpod_analyzer', 'last_run', 'magicpod.json'),
+        `{
+  "FakeProject/FakeOrganization": {
+    "lastRun": 2,
+    "updatedAt": "2025-01-02T12:00:00.000Z"
+  }
+}`,
       ),
     )
   })
