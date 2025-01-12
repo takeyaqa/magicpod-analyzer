@@ -22,7 +22,6 @@
     "@oclif/core": "^4",
     "@oclif/plugin-help": "^6",
     "axios": "^1.7.9",
-    "dayjs": "^1.11.13",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "tslog": "^3.3.4"
