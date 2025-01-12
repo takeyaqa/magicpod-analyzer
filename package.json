@@ -23,7 +23,6 @@
     "@oclif/plugin-help": "^6",
     "axios": "^1.7.9",
     "js-yaml": "^4.1.0",
-    "lodash": "^4.17.21",
     "tslog": "^3.3.4"
   },
   "devDependencies": {
@@ -32,7 +31,6 @@
     "@types/chai": "^4",
     "@types/chai-as-promised": "^7.1.8",
     "@types/js-yaml": "^4.0.9",
-    "@types/lodash": "^4.17.14",
     "@types/mocha": "^10",
     "@types/node": "^18",
     "chai": "^4",
