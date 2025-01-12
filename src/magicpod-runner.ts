@@ -18,27 +18,14 @@ export class MagicPodRunner {
   private readonly client: MagicPodClient
   private readonly analyzer: MagicPodAnalyzer
   private readonly debugMode: boolean
-  private readonly bigqueryBaseUrl?: string
-  private readonly gcsBaseUrl?: string
   private store?: LastRunStore
 
-  // eslint-disable-next-line max-params
-  constructor(
-    logger: Logger,
-    config: MagicPodConfig,
-    token = '',
-    debugMode = false,
-    baseUrl = 'https://app.magicpod.com',
-    bigqueryBaseUrl?: string,
-    gcsBaseUrl?: string,
-  ) {
+  constructor(logger: Logger, config: MagicPodConfig, token = '', debugMode = false) {
     this.logger = logger.getChildLogger({name: MagicPodRunner.name})
     this.config = config
-    this.client = new MagicPodClient(token, logger, debugMode, baseUrl)
+    this.client = new MagicPodClient(token, logger, debugMode)
     this.analyzer = new MagicPodAnalyzer()
     this.debugMode = debugMode
-    this.bigqueryBaseUrl = bigqueryBaseUrl
-    this.gcsBaseUrl = gcsBaseUrl
   }
 
   async run(): Promise<Result> {
@@ -46,7 +33,7 @@ export class MagicPodRunner {
       this.logger.info('--- Enable DEBUG mode ---')
     }
 
-    this.store = await LastRunStore.init(this.logger, this.config.lastRunStore, this.debugMode, this.gcsBaseUrl)
+    this.store = await LastRunStore.init(this.logger, this.config.lastRunStore, this.debugMode)
     const allReports: TestReport[][] = []
     let result: Result = {status: 'success'}
     for (const project of this.config.projects) {
@@ -79,7 +66,7 @@ export class MagicPodRunner {
 
     // export
     this.logger.info('Exporting magicpod workflow reports ...')
-    const exporter = new CompositExporter(this.logger, this.config.exporter, this.debugMode, this.bigqueryBaseUrl)
+    const exporter = new CompositExporter(this.logger, this.config.exporter, this.debugMode)
     await exporter.exportTestReports(allReports.flat())
 
     await this.store.save()

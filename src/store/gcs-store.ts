@@ -9,8 +9,7 @@ export class GcsStore implements Store {
   readonly gcsPath: string
   private readonly logger: Logger
 
-  // eslint-disable-next-line max-params
-  constructor(logger: Logger, projectId?: string, bucket?: string, filePath?: string, baseUrl?: string) {
+  constructor(logger: Logger, projectId?: string, bucket?: string, filePath?: string) {
     const fp = filePath ?? path.join('ci_analyzer', 'last_run', 'magicpod.json')
 
     if (!projectId || !bucket) {
@@ -19,7 +18,7 @@ export class GcsStore implements Store {
 
     this.logger = logger.getChildLogger({name: GcsStore.name})
 
-    const storage = new Storage({projectId, apiEndpoint: baseUrl})
+    const storage = new Storage({projectId, apiEndpoint: process.env.GCS_EMULATOR_HOST})
     this.file = storage.bucket(bucket).file(fp)
     this.gcsPath = `gs://${bucket}/${fp}`
   }
