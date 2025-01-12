@@ -1,8 +1,17 @@
+/* eslint-disable no-await-in-loop */
 import {Command, Flags} from '@oclif/core'
 import {Logger} from 'tslog'
 
+import {CompositExporter} from '../exporter/exporter'
+import {MagicPodAnalyzer, TestReport} from '../magicpod-analyzer'
+import {MagicPodClient} from '../magicpod-client'
 import {loadConfig} from '../magicpod-config'
-import {MagicPodRunner} from '../magicpod-runner'
+import {LastRunStore} from '../store/store'
+
+interface Result {
+  status: 'success' | 'failure'
+  error?: Error
+}
 
 export default class GetBatchRuns extends Command {
   static description = "Retrieve specified project's batch run data from MagicPod."
@@ -39,12 +48,60 @@ export default class GetBatchRuns extends Command {
     const configFile = flags.config ?? 'magicpod_analyzer.yaml'
 
     const config = await loadConfig(configFile)
-    const runner = new MagicPodRunner(logger, config, flags.token, flags.debug)
-    const result = await runner.run()
+    const client = new MagicPodClient(flags.token, logger, flags.debug)
+    const analyzer = new MagicPodAnalyzer()
+    if (flags.debug) {
+      logger.info('--- Enable DEBUG mode ---')
+    }
+
+    const store = await LastRunStore.init(logger, config.lastRunStore, flags.debug)
+    const allReports: TestReport[][] = []
+    let result: Result = {status: 'success'}
+    for (const project of config.projects) {
+      logger.info(`Fetching magicpod - ${project.fullName} ...`)
+
+      try {
+        // retrieve
+        const lastRunId = store.getLastRun(project.fullName)
+        const data = await client.getBatchRuns(project.organization, project.name, lastRunId)
+
+        // convert
+        const reports = await analyzer.createTestReports(data)
+
+        // store
+        if (reports.length > 0) {
+          const lastRunReport = this.maxBy(reports, (report) => report.buildNumber)
+          if (lastRunReport) {
+            store.setLastRun(project.fullName, lastRunReport.buildNumber)
+          }
+        }
+
+        allReports.push(reports)
+      } catch {
+        const errorMessage = `Some error raised in '${project.fullName}', so it skipped.`
+        logger.error(errorMessage)
+        result = {status: 'failure', error: new Error(errorMessage)}
+        continue
+      }
+    }
+
+    // export
+    logger.info('Exporting magicpod workflow reports ...')
+    const exporter = new CompositExporter(logger, config.exporter, flags.debug)
+    await exporter.exportTestReports(allReports.flat())
+
+    await store.save()
+    logger.info(`Done execute 'magicpod'. status: ${result.status}`)
+
     if (result.error) {
       this.error(result.error, {exit: 1})
     } else {
       this.exit()
     }
+  }
+
+  private maxBy<T>(collection: T[], iteratee: (item: T) => number): T | undefined {
+    const max = Math.max(...collection.map((item) => iteratee(item)))
+    return collection.find((item) => iteratee(item) === max)
   }
 }
