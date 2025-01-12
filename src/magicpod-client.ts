@@ -1,5 +1,7 @@
 import {Logger} from 'tslog'
 
+import {minBy} from './util'
+
 type Status = 'not-running' | 'running' | 'succeeded' | 'failed' | 'aborted' | 'unresolved'
 
 export interface BatchRuns {
@@ -90,7 +92,7 @@ export class MagicPodClient {
     const batchRuns = (await response.json()) as BatchRuns
 
     // Cut running data
-    const firstInprogress = this.minBy(
+    const firstInprogress = minBy(
       batchRuns.batch_runs.filter((batchRun) => batchRun.status === 'running' || batchRun.status === 'unresolved'),
       (batchRun) => batchRun.batch_run_number,
     )
@@ -119,11 +121,6 @@ export class MagicPodClient {
       batch_runs: resultBatchRuns,
     }
     /* eslint-enable camelcase */
-  }
-
-  private minBy<T>(collection: T[], iteratee: (item: T) => number): T | undefined {
-    const min = Math.min(...collection.map((item) => iteratee(item)))
-    return collection.find((item) => iteratee(item) === min)
   }
 
   private async fetchWithLogging(request: Request): Promise<Response> {
