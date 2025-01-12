@@ -1,4 +1,3 @@
-import axios, {AxiosInstance} from 'axios'
 import {Logger} from 'tslog'
 
 type Status = 'not-running' | 'running' | 'succeeded' | 'failed' | 'aborted' | 'unresolved'
@@ -55,56 +54,19 @@ const DEFAULT_COUNT = 100
 const DEBUG_COUNT = 10
 
 export class MagicPodClient {
-  private readonly axios: AxiosInstance
+  readonly baseUrl: string
+  readonly headers: Record<string, string>
   private readonly logger: Logger
   private readonly debugMode: boolean
 
   constructor(token: string, logger: Logger, debugMode = false, baseUrl = 'https://app.magicpod.com') {
-    this.axios = axios.create({
-      baseURL: `${baseUrl}/api/v1.0`,
-      headers: {
-        Authorization: `Token ${token}`,
-        Accept: 'application/json',
-      },
-    })
-
+    this.baseUrl = `${baseUrl}/api/v1.0`
+    this.headers = {
+      Authorization: `Token ${token}`,
+      Accept: 'application/json',
+    }
     this.logger = logger.getChildLogger({name: MagicPodClient.name})
     this.debugMode = debugMode
-
-    this.axios.interceptors.request.use((request) => {
-      this.logger.debug(`${request.method?.toUpperCase()} ${request.url}`)
-      this.logger.debug('request', {
-        method: request.method?.toUpperCase(),
-        baseUrl: request.baseURL,
-        url: request.url,
-        params: request.params,
-      })
-      return request
-    })
-    this.axios.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (axios.isAxiosError(error)) {
-          logger.error({
-            message: error.message,
-            request: {
-              method: error.request?.method ?? error.request?._currentRequest.method,
-              host: error.request?.host ?? error.request?._currentRequest.host,
-              path: error.request?.path ?? error.request?._currentRequest.path,
-            },
-            response: {
-              status: error.response?.status,
-              statusText: error.response?.statusText,
-              baseUrl: error.response?.config.baseURL,
-              url: error.response?.config.url,
-              params: error.response?.config.params,
-            },
-          })
-        }
-
-        return Promise.reject(error)
-      },
-    )
   }
 
   async getBatchRuns(organizationName: string, projectName: string, minBatchRunNumber?: number): Promise<BatchRuns> {
@@ -122,8 +84,9 @@ export class MagicPodClient {
   ): Promise<BatchRuns> {
     const query = minBatchRunNumber ? `&min_batch_run_number=${minBatchRunNumber + 1}` : ''
     const count = this.debugMode ? DEBUG_COUNT : DEFAULT_COUNT
-    const res = await this.axios.get(`/${organizationName}/${projectName}/batch-runs/?count=${count}${query}`)
-    const batchRuns = res.data as BatchRuns
+    const path = `/${organizationName}/${projectName}/batch-runs/?count=${count}${query}`
+    const response = await this.fetchWithLogging(new Request(`${this.baseUrl}${path}`, {headers: this.headers}))
+    const batchRuns = (await response.json()) as BatchRuns
 
     // Cut running data
     const firstInprogress = this.minBy(
@@ -141,18 +104,18 @@ export class MagicPodClient {
   }
 
   private async retrieveDetailedBatchRuns(batchRuns: BatchRuns): Promise<BatchRuns> {
-    const connections = batchRuns.batch_runs.map((batchRun) =>
-      this.axios.get(
-        `/${batchRuns.organization_name}/${batchRuns.project_name}/batch-run/${batchRun.batch_run_number}/`,
-      ),
-    )
-    const resultList = await Promise.all(connections)
+    const connections = batchRuns.batch_runs.map(async (batchRun) => {
+      const path = `/${batchRuns.organization_name}/${batchRuns.project_name}/batch-run/${batchRun.batch_run_number}/`
+      const response = await this.fetchWithLogging(new Request(`${this.baseUrl}${path}`, {headers: this.headers}))
+      return (await response.json()) as BatchRun
+    })
+    const resultBatchRuns = await Promise.all(connections)
 
     /* eslint-disable camelcase */
     return {
       organization_name: batchRuns.organization_name,
       project_name: batchRuns.project_name,
-      batch_runs: resultList.map((res) => res.data as BatchRun),
+      batch_runs: resultBatchRuns,
     }
     /* eslint-enable camelcase */
   }
@@ -160,5 +123,47 @@ export class MagicPodClient {
   private minBy<T>(collection: T[], iteratee: (item: T) => number): T | undefined {
     const min = Math.min(...collection.map((item) => iteratee(item)))
     return collection.find((item) => iteratee(item) === min)
+  }
+
+  private async fetchWithLogging(request: Request): Promise<Response> {
+    this.printDebugRequest(request)
+    const response = await fetch(request)
+    if (!response.ok) {
+      const message = this.printErrorResponse(request, response)
+      throw new Error(message)
+    }
+
+    return response
+  }
+
+  private printDebugRequest(request: Request): void {
+    const requestUrl = new URL(request.url)
+    this.logger.debug(`${request.method} ${requestUrl.pathname}${requestUrl.search}`)
+    this.logger.debug('request', {
+      method: request.method,
+      origin: requestUrl.origin,
+      path: `${requestUrl.pathname}${requestUrl.search}`,
+    })
+  }
+
+  private printErrorResponse(request: Request, response: Response): string {
+    const requestUrl = new URL(request.url)
+    const responseUrl = new URL(response.url)
+    const message = `Request failed with status code ${response.status}`
+    this.logger.error({
+      message,
+      request: {
+        method: request.method,
+        origin: requestUrl.origin,
+        path: `${requestUrl.pathname}${requestUrl.search}`,
+      },
+      response: {
+        status: response.status,
+        statusText: response.statusText,
+        origin: responseUrl.origin,
+        path: `${responseUrl.pathname}${responseUrl.search}`,
+      },
+    })
+    return message
   }
 }
