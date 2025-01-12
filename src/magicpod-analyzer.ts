@@ -58,16 +58,18 @@ export class MagicPodAnalyzer {
           tests: batchRun.test_cases.total,
           failures: batchRun.test_cases.failed ?? 0,
           time: duration,
-          testsuite: [{
-            name: batchRun.test_setting_name,
-            errors: 0,
-            failures: batchRun.test_cases.failed ?? 0,
-            skipped: 0,
-            timestamp: new Date(batchRun.started_at),
-            time: duration,
-            tests: batchRun.test_cases.total,
-            testcase: this.convertTestCases(batchRun.test_cases.details[0].results),
-          }],
+          testsuite: [
+            {
+              name: batchRun.test_setting_name,
+              errors: 0,
+              failures: batchRun.test_cases.failed ?? 0,
+              skipped: 0,
+              timestamp: new Date(batchRun.started_at),
+              time: duration,
+              tests: batchRun.test_cases.total,
+              testcase: this.convertTestCases(batchRun.test_cases.details[0].results),
+            },
+          ],
         },
         status: batchRun.status === 'succeeded' ? 'SUCCESS' : 'FAILURE',
         successCount: batchRun.status === 'succeeded' ? 1 : 0,
@@ -78,7 +80,7 @@ export class MagicPodAnalyzer {
   }
 
   private convertTestCases(testCaseResults: TestCaseResult[]): TestCase[] {
-    return testCaseResults.map(testCaseResult => {
+    return testCaseResults.map((testCaseResult) => {
       const name = testCaseResult.number ? `No.${testCaseResult.number}` : 'No.'
       return {
         classname: name,
@@ -91,6 +93,6 @@ export class MagicPodAnalyzer {
   }
 
   private calcDuration(startedAt: string, finishedAt: string): number {
-    return ((new Date(finishedAt)).getTime() - (new Date(startedAt)).getTime()) / 1000
+    return (new Date(finishedAt).getTime() - new Date(startedAt).getTime()) / 1000
   }
 }

@@ -35,7 +35,7 @@ export class LocalExporter implements Exporter {
       }
 
       case 'json_lines': {
-        return testReports.map(report => JSON.stringify(report)).join('\n')
+        return testReports.map((report) => JSON.stringify(report)).join('\n')
       }
     }
   }

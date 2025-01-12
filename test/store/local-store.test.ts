@@ -34,7 +34,7 @@ describe('local-store', () => {
   it('initialize with path', () => {
     const store = new LocalStore(new Logger(), 'test.json')
     expect(path.isAbsolute(store.filePath)).to.be.true
-    expect(store.filePath).to.equal(path.join(process.cwd(),'test.json'))
+    expect(store.filePath).to.equal(path.join(process.cwd(), 'test.json'))
   })
 
   it('read with no previous file', async () => {
@@ -43,15 +43,34 @@ describe('local-store', () => {
   })
 
   it('read with exists previous file', async () => {
-    td.when(fsDouble.readFile(store.filePath, {encoding: 'utf8'})).thenResolve('{"FakeProject/FakeOrganization": {"lastRun": 1, "updatedAt": "2025-01-01T12:00:00.000Z"}}')
+    td.when(fsDouble.readFile(store.filePath, {encoding: 'utf8'})).thenResolve(
+      '{"FakeProject/FakeOrganization": {"lastRun": 1, "updatedAt": "2025-01-01T12:00:00.000Z"}}',
+    )
     const lastRun = await store.read()
-    expect(lastRun).to.be.deep.equal({'FakeProject/FakeOrganization': {lastRun: 1, updatedAt: '2025-01-01T12:00:00.000Z'}})
+    expect(lastRun).to.be.deep.equal({
+      'FakeProject/FakeOrganization': {lastRun: 1, updatedAt: '2025-01-01T12:00:00.000Z'},
+    })
   })
 
   it('write', async () => {
-    td.when(fsDouble.readFile(store.filePath, {encoding: 'utf8'})).thenResolve('{"FakeProject/FakeOrganization": {"lastRun": 1, "updatedAt": "2025-01-01T12:00:00.000Z"}}')
-    const lastRun = await store.write({'FakeProject/FakeOrganization': {lastRun: 2, updatedAt: new Date('2025-01-02T12:00:00.000Z')}})
-    expect(lastRun).to.be.deep.equal({'FakeProject/FakeOrganization': {lastRun: 2, updatedAt: new Date('2025-01-02T12:00:00.000Z')}})
-    td.verify(fsDouble.writeFile(store.filePath, JSON.stringify({'FakeProject/FakeOrganization': {lastRun: 2, updatedAt: new Date('2025-01-02T12:00:00.000Z')}}, null, 2)))
+    td.when(fsDouble.readFile(store.filePath, {encoding: 'utf8'})).thenResolve(
+      '{"FakeProject/FakeOrganization": {"lastRun": 1, "updatedAt": "2025-01-01T12:00:00.000Z"}}',
+    )
+    const lastRun = await store.write({
+      'FakeProject/FakeOrganization': {lastRun: 2, updatedAt: new Date('2025-01-02T12:00:00.000Z')},
+    })
+    expect(lastRun).to.be.deep.equal({
+      'FakeProject/FakeOrganization': {lastRun: 2, updatedAt: new Date('2025-01-02T12:00:00.000Z')},
+    })
+    td.verify(
+      fsDouble.writeFile(
+        store.filePath,
+        JSON.stringify(
+          {'FakeProject/FakeOrganization': {lastRun: 2, updatedAt: new Date('2025-01-02T12:00:00.000Z')}},
+          null,
+          2,
+        ),
+      ),
+    )
   })
 })

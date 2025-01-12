@@ -18,8 +18,7 @@ describe('magicpod-client', () => {
 
   beforeEach(async () => {
     nock.disableNetConnect()
-    scope = nock('https://app.magicpod.com')
-      .matchHeader('Authorization', `Token ${TOKEN_FOR_TEST}`)
+    scope = nock('https://app.magicpod.com').matchHeader('Authorization', `Token ${TOKEN_FOR_TEST}`)
     magicPodClient = new MagicPodClient(TOKEN_FOR_TEST, new Logger())
   })
 
@@ -30,19 +29,20 @@ describe('magicpod-client', () => {
   })
 
   it('invalid token', async () => {
-    scope = nock('https://app.magicpod.com')
-      .get('/api/v1.0/FakeOrganization/FakeProject/batch-runs/')
-      .reply(200)
+    scope = nock('https://app.magicpod.com').get('/api/v1.0/FakeOrganization/FakeProject/batch-runs/').reply(200)
     const client = new MagicPodClient(`Token ${TOKEN_FOR_TEST}`, new Logger())
-    await expect(client.getBatchRuns('FakeOrganization', 'FakeProject')).to.be.rejectedWith('Nock: No match for request')
+    await expect(client.getBatchRuns('FakeOrganization', 'FakeProject')).to.be.rejectedWith(
+      'Nock: No match for request',
+    )
   })
 
   it('getBatchRuns', async () => {
-    scope.get('/api/v1.0/FakeOrganization/FakeProject/batch-runs/')
+    scope
+      .get('/api/v1.0/FakeOrganization/FakeProject/batch-runs/')
       .query({count: 100})
       .reply(200, {
-        organization_name: "FakeOrganization",
-        project_name: "FakeProject",
+        organization_name: 'FakeOrganization',
+        project_name: 'FakeProject',
         batch_runs: [
           {
             batch_run_number: 200,
@@ -73,8 +73,8 @@ describe('magicpod-client', () => {
       })
       .get('/api/v1.0/FakeOrganization/FakeProject/batch-run/200/')
       .reply(200, {
-        organization_name: "FakeOrganization",
-        project_name: "FakeProject",
+        organization_name: 'FakeOrganization',
+        project_name: 'FakeProject',
         batch_run_number: 200,
         test_setting_name: 'Fake Test Setting',
         status: 'succeeded',
@@ -111,8 +111,8 @@ describe('magicpod-client', () => {
       })
       .get('/api/v1.0/FakeOrganization/FakeProject/batch-run/199/')
       .reply(200, {
-        organization_name: "FakeOrganization",
-        project_name: "FakeProject",
+        organization_name: 'FakeOrganization',
+        project_name: 'FakeProject',
         batch_run_number: 199,
         test_setting_name: 'Fake Test Setting',
         status: 'succeeded',
@@ -156,7 +156,7 @@ describe('magicpod-client', () => {
       batch_runs: [
         {
           organization_name: 'FakeOrganization',
-          project_name: 'FakeProject',    
+          project_name: 'FakeProject',
           batch_run_number: 200,
           test_setting_name: 'Fake Test Setting',
           status: 'succeeded',
@@ -193,7 +193,7 @@ describe('magicpod-client', () => {
         },
         {
           organization_name: 'FakeOrganization',
-          project_name: 'FakeProject',    
+          project_name: 'FakeProject',
           batch_run_number: 199,
           test_setting_name: 'Fake Test Setting',
           status: 'succeeded',
@@ -234,11 +234,12 @@ describe('magicpod-client', () => {
   })
 
   it('getBatchRuns - ignore after running data', async () => {
-    scope.get('/api/v1.0/FakeOrganization/FakeProject/batch-runs/')
+    scope
+      .get('/api/v1.0/FakeOrganization/FakeProject/batch-runs/')
       .query({count: 100})
       .reply(200, {
-        organization_name: "FakeOrganization",
-        project_name: "FakeProject",
+        organization_name: 'FakeOrganization',
+        project_name: 'FakeProject',
         batch_runs: [
           {
             batch_run_number: 201,
@@ -281,8 +282,8 @@ describe('magicpod-client', () => {
       })
       .get('/api/v1.0/FakeOrganization/FakeProject/batch-run/200/')
       .reply(200, {
-        organization_name: "FakeOrganization",
-        project_name: "FakeProject",
+        organization_name: 'FakeOrganization',
+        project_name: 'FakeProject',
         batch_run_number: 200,
         test_setting_name: 'Fake Test Setting',
         status: 'succeeded',
@@ -319,8 +320,8 @@ describe('magicpod-client', () => {
       })
       .get('/api/v1.0/FakeOrganization/FakeProject/batch-run/199/')
       .reply(200, {
-        organization_name: "FakeOrganization",
-        project_name: "FakeProject",
+        organization_name: 'FakeOrganization',
+        project_name: 'FakeProject',
         batch_run_number: 199,
         test_setting_name: 'Fake Test Setting',
         status: 'succeeded',
@@ -364,7 +365,7 @@ describe('magicpod-client', () => {
       batch_runs: [
         {
           organization_name: 'FakeOrganization',
-          project_name: 'FakeProject',    
+          project_name: 'FakeProject',
           batch_run_number: 200,
           test_setting_name: 'Fake Test Setting',
           status: 'succeeded',
@@ -401,7 +402,7 @@ describe('magicpod-client', () => {
         },
         {
           organization_name: 'FakeOrganization',
-          project_name: 'FakeProject',    
+          project_name: 'FakeProject',
           batch_run_number: 199,
           test_setting_name: 'Fake Test Setting',
           status: 'succeeded',
@@ -442,11 +443,12 @@ describe('magicpod-client', () => {
   })
 
   it('getBatchRuns - ignore after unresolved data', async () => {
-    scope.get('/api/v1.0/FakeOrganization/FakeProject/batch-runs/')
+    scope
+      .get('/api/v1.0/FakeOrganization/FakeProject/batch-runs/')
       .query({count: 100})
       .reply(200, {
-        organization_name: "FakeOrganization",
-        project_name: "FakeProject",
+        organization_name: 'FakeOrganization',
+        project_name: 'FakeProject',
         batch_runs: [
           {
             batch_run_number: 201,
@@ -489,8 +491,8 @@ describe('magicpod-client', () => {
       })
       .get('/api/v1.0/FakeOrganization/FakeProject/batch-run/199/')
       .reply(200, {
-        organization_name: "FakeOrganization",
-        project_name: "FakeProject",
+        organization_name: 'FakeOrganization',
+        project_name: 'FakeProject',
         batch_run_number: 199,
         test_setting_name: 'Fake Test Setting',
         status: 'succeeded',
@@ -534,7 +536,7 @@ describe('magicpod-client', () => {
       batch_runs: [
         {
           organization_name: 'FakeOrganization',
-          project_name: 'FakeProject',    
+          project_name: 'FakeProject',
           batch_run_number: 199,
           test_setting_name: 'Fake Test Setting',
           status: 'succeeded',
@@ -575,11 +577,12 @@ describe('magicpod-client', () => {
   })
 
   it('getBatchRuns - after specific batch number', async () => {
-    scope.get('/api/v1.0/FakeOrganization/FakeProject/batch-runs/')
+    scope
+      .get('/api/v1.0/FakeOrganization/FakeProject/batch-runs/')
       .query({count: 100, min_batch_run_number: 200})
       .reply(200, {
-        organization_name: "FakeOrganization",
-        project_name: "FakeProject",
+        organization_name: 'FakeOrganization',
+        project_name: 'FakeProject',
         batch_runs: [
           {
             batch_run_number: 200,
@@ -597,8 +600,8 @@ describe('magicpod-client', () => {
       })
       .get('/api/v1.0/FakeOrganization/FakeProject/batch-run/200/')
       .reply(200, {
-        organization_name: "FakeOrganization",
-        project_name: "FakeProject",
+        organization_name: 'FakeOrganization',
+        project_name: 'FakeProject',
         batch_run_number: 200,
         test_setting_name: 'Fake Test Setting',
         status: 'succeeded',
@@ -641,7 +644,7 @@ describe('magicpod-client', () => {
       batch_runs: [
         {
           organization_name: 'FakeOrganization',
-          project_name: 'FakeProject',    
+          project_name: 'FakeProject',
           batch_run_number: 200,
           test_setting_name: 'Fake Test Setting',
           status: 'succeeded',
@@ -681,11 +684,12 @@ describe('magicpod-client', () => {
   })
 
   it('getBatchRuns - debug mode', async () => {
-    scope.get('/api/v1.0/FakeOrganization/FakeProject/batch-runs/')
+    scope
+      .get('/api/v1.0/FakeOrganization/FakeProject/batch-runs/')
       .query({count: 10})
       .reply(200, {
-        organization_name: "FakeOrganization",
-        project_name: "FakeProject",
+        organization_name: 'FakeOrganization',
+        project_name: 'FakeProject',
         batch_runs: [
           {
             batch_run_number: 200,
@@ -716,8 +720,8 @@ describe('magicpod-client', () => {
       })
       .get('/api/v1.0/FakeOrganization/FakeProject/batch-run/200/')
       .reply(200, {
-        organization_name: "FakeOrganization",
-        project_name: "FakeProject",
+        organization_name: 'FakeOrganization',
+        project_name: 'FakeProject',
         batch_run_number: 200,
         test_setting_name: 'Fake Test Setting',
         status: 'succeeded',
@@ -754,8 +758,8 @@ describe('magicpod-client', () => {
       })
       .get('/api/v1.0/FakeOrganization/FakeProject/batch-run/199/')
       .reply(200, {
-        organization_name: "FakeOrganization",
-        project_name: "FakeProject",
+        organization_name: 'FakeOrganization',
+        project_name: 'FakeProject',
         batch_run_number: 199,
         test_setting_name: 'Fake Test Setting',
         status: 'succeeded',
@@ -800,7 +804,7 @@ describe('magicpod-client', () => {
       batch_runs: [
         {
           organization_name: 'FakeOrganization',
-          project_name: 'FakeProject',    
+          project_name: 'FakeProject',
           batch_run_number: 200,
           test_setting_name: 'Fake Test Setting',
           status: 'succeeded',
@@ -837,7 +841,7 @@ describe('magicpod-client', () => {
         },
         {
           organization_name: 'FakeOrganization',
-          project_name: 'FakeProject',    
+          project_name: 'FakeProject',
           batch_run_number: 199,
           test_setting_name: 'Fake Test Setting',
           status: 'succeeded',

@@ -29,6 +29,6 @@ export class CompositExporter implements Exporter {
   }
 
   async exportTestReports(reports: TestReport[]): Promise<void> {
-    await Promise.all(this.exporters.map(exporter => exporter.exportTestReports(reports)))
+    await Promise.all(this.exporters.map((exporter) => exporter.exportTestReports(reports)))
   }
 }

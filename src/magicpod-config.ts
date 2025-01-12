@@ -59,7 +59,7 @@ export interface GCSLastRunStoreConfig extends LastRunStoreConfig {
 
 export async function loadConfig(configPath: string): Promise<MagicPodConfig> {
   const config = yaml.load(await fs.readFile(configPath, 'utf8')) as RawConfig
-  const projects = config.magicpod.projects.map(project => {
+  const projects = config.magicpod.projects.map((project) => {
     const [organization, name] = project.split('/')
     return {
       organization,
