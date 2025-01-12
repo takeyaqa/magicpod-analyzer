@@ -38,7 +38,7 @@ describe('get-batch-runs', () => {
     // Set environment variables
     originalEnv = {...process.env}
     process.env = {
-      ...process.env,
+      ...originalEnv,
       MAGICPOD_EMULATOR_HOST: MAGICPOD_FOR_TEST,
       GCS_EMULATOR_HOST: GCS_FOR_TEST,
       BIGQUERY_EMULATOR_HOST: BIGQUERY_FOR_TEST,

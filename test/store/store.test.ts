@@ -21,7 +21,7 @@ describe('store', () => {
     // Set environment variables
     originalEnv = {...process.env}
     process.env = {
-      ...process.env,
+      ...originalEnv,
       GCS_EMULATOR_HOST: GCS_FOR_TEST,
     }
   })
