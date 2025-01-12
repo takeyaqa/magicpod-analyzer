@@ -15,6 +15,21 @@ const {expect} = chai
 const GCS_FOR_TEST = process.env.GITHUB_ACTIONS ? 'https://localhost:4443' : 'http://localhost:4443'
 
 describe('store', () => {
+  let originalEnv: NodeJS.ProcessEnv
+
+  beforeEach(async () => {
+    // Set environment variables
+    originalEnv = {...process.env}
+    process.env = {
+      ...process.env,
+      GCS_EMULATOR_HOST: GCS_FOR_TEST,
+    }
+  })
+
+  afterEach(async () => {
+    process.env = originalEnv
+  })
+
   it('initialize', async () => {
     let config = {backend: 'local', filePath: 'test.json'} as LastRunStoreConfig
     const nullStore = await LastRunStore.init(new Logger(), config, true)
@@ -22,7 +37,7 @@ describe('store', () => {
     const localStore = await LastRunStore.init(new Logger(), config)
     expect(localStore.store).to.be.instanceOf(LocalStore)
     config = {backend: 'gcs', project: 'fake-project', bucket: 'fake-bucket', path: 'test.json'} as LastRunStoreConfig
-    const gcsStore = await LastRunStore.init(new Logger(), config, false, GCS_FOR_TEST)
+    const gcsStore = await LastRunStore.init(new Logger(), config, false)
     expect(gcsStore.store).to.be.instanceOf(GcsStore)
   })
 })

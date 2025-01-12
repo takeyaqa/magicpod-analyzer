@@ -15,26 +15,13 @@ export default class GetBatchRuns extends Command {
       description:
         'Access token for MagicPod API. You can also set this value via environment variable `MAGICPOD_TOKEN`',
       env: 'MAGICPOD_TOKEN',
+      char: 't',
       required: true,
     }),
     debug: Flags.boolean({
       description: 'Enable debug mode. You can also set this value via environment variable `MAGICPOD_ANALYZER_DEBUG`',
       env: 'MAGICPOD_ANALYZER_DEBUG',
       char: 'd',
-    }),
-    baseUrl: Flags.string({
-      description:
-        'Base URL for MagicPod API. You can also set this value via environment variable `MAGICPOD_BASE_URL`',
-      env: 'MAGICPOD_BASE_URL',
-    }),
-    bigqueryBaseURL: Flags.string({
-      description:
-        'Base URL for BigQuery API. You can also set this value via environment variable `BIGQUERY_BASE_URL`',
-      env: 'BIGQUERY_BASE_URL',
-    }),
-    gcsBaseURL: Flags.string({
-      description: 'Base URL for GCS API. You can also set this value via environment variable `GCS_BASE_URL`',
-      env: 'GCS_BASE_URL',
     }),
   }
 
@@ -52,15 +39,7 @@ export default class GetBatchRuns extends Command {
     const configFile = flags.config ?? 'magicpod_analyzer.yaml'
 
     const config = await loadConfig(configFile)
-    const runner = new MagicPodRunner(
-      logger,
-      config,
-      flags.token,
-      flags.debug,
-      flags.baseUrl,
-      flags.bigqueryBaseURL,
-      flags.gcsBaseURL,
-    )
+    const runner = new MagicPodRunner(logger, config, flags.token, flags.debug)
     const result = await runner.run()
     if (result.error) {
       this.error(result.error, {exit: 1})

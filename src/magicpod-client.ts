@@ -59,7 +59,8 @@ export class MagicPodClient {
   private readonly logger: Logger
   private readonly debugMode: boolean
 
-  constructor(token: string, logger: Logger, debugMode = false, baseUrl = 'https://app.magicpod.com') {
+  constructor(token: string, logger: Logger, debugMode = false) {
+    const baseUrl = process.env.MAGICPOD_EMULATOR_HOST ?? 'https://app.magicpod.com'
     this.baseUrl = `${baseUrl}/api/v1.0`
     this.headers = {
       Authorization: `Token ${token}`,

@@ -36,21 +36,14 @@ USAGE
 
 ```
 USAGE
-  $ magicpod-analyzer get-batch-runs --token <value> [-c <value>] [-d] [--baseUrl <value>] [--bigqueryBaseURL
-    <value>] [--gcsBaseURL <value>]
+  $ magicpod-analyzer get-batch-runs -t <value> [-c <value>] [-d]
 
 FLAGS
-  -c, --config=<value>           Config file default: magicpod_analyzer.yaml
-  -d, --debug                    Enable debug mode. You can also set this value via environment variable
-                                 `MAGICPOD_ANALYZER_DEBUG`
-      --baseUrl=<value>          Base URL for MagicPod API. You can also set this value via environment variable
-                                 `MAGICPOD_BASE_URL`
-      --bigqueryBaseURL=<value>  Base URL for BigQuery API. You can also set this value via environment variable
-                                 `BIGQUERY_BASE_URL`
-      --gcsBaseURL=<value>       Base URL for GCS API. You can also set this value via environment variable
-                                 `GCS_BASE_URL`
-      --token=<value>            (required) Access token for MagicPod API. You can also set this value via environment
-                                 variable `MAGICPOD_TOKEN`
+  -c, --config=<value>  Config file default: magicpod_analyzer.yaml
+  -d, --debug           Enable debug mode. You can also set this value via environment variable
+                        `MAGICPOD_ANALYZER_DEBUG`
+  -t, --token=<value>   (required) Access token for MagicPod API. You can also set this value via environment variable
+                        `MAGICPOD_TOKEN`
 
 DESCRIPTION
   Retrieve specified project's batch run data from MagicPod.

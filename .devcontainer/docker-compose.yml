@@ -3,8 +3,6 @@ services:
     image: mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm
     volumes:
       - ../..:/workspaces:cached
-    environment:
-      - BIGQUERY_EMULATOR_HOST=http://localhost:9050
     command: sleep infinity
 
   fakepod:

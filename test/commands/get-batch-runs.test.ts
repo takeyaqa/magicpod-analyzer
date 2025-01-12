@@ -13,6 +13,7 @@ const {expect} = chai
 
 const TOKEN_FOR_TEST = '4uKNEY5hE4w3WCxi'
 const MAGICPOD_FOR_TEST = 'http://localhost:3000'
+const BIGQUERY_FOR_TEST = 'http://localhost:9050'
 const GCS_FOR_TEST = process.env.GITHUB_ACTIONS ? 'https://localhost:4443' : 'http://localhost:4443'
 // eslint-disable-next-line unicorn/prefer-module
 const SCHEMA_PATH = path.join(__dirname, '..', '..', 'bigquery_schema', 'test_report.json')
@@ -20,6 +21,7 @@ const SCHEMA_PATH = path.join(__dirname, '..', '..', 'bigquery_schema', 'test_re
 describe('get-batch-runs', () => {
   let storage: Storage
   let bigquery: BigQuery
+  let originalEnv: NodeJS.ProcessEnv
 
   beforeEach(async () => {
     // monkey patch for teeny-request
@@ -31,6 +33,15 @@ describe('get-batch-runs', () => {
       }
 
       teenyRequest(opts, callback)
+    }
+
+    // Set environment variables
+    originalEnv = {...process.env}
+    process.env = {
+      ...process.env,
+      MAGICPOD_EMULATOR_HOST: MAGICPOD_FOR_TEST,
+      GCS_EMULATOR_HOST: GCS_FOR_TEST,
+      BIGQUERY_EMULATOR_HOST: BIGQUERY_FOR_TEST,
     }
 
     // Create Fake GCS bucket
@@ -58,6 +69,9 @@ describe('get-batch-runs', () => {
     // Delete output directory
     await fs.rm('.magicpod_analyzer', {force: true, recursive: true})
     await fs.rm('output', {force: true, recursive: true})
+
+    // Reset environment variables
+    process.env = originalEnv
   })
 
   it('Success with GCS and BigQuery', async () => {
@@ -66,12 +80,8 @@ describe('get-batch-runs', () => {
       'get-batch-runs',
       '--token',
       TOKEN_FOR_TEST,
-      '-c',
+      '--config',
       './test/magicpod_analyzer_test_gcs_bigquery.yaml',
-      '--baseUrl',
-      MAGICPOD_FOR_TEST,
-      '--gcsBaseURL',
-      GCS_FOR_TEST,
     ])
 
     // Check stdout messesges
@@ -100,12 +110,8 @@ describe('get-batch-runs', () => {
       'get-batch-runs',
       '--token',
       TOKEN_FOR_TEST,
-      '-c',
+      '--config',
       './test/magicpod_analyzer_test_local_local.yaml',
-      '--baseUrl',
-      MAGICPOD_FOR_TEST,
-      '--gcsBaseURL',
-      GCS_FOR_TEST,
     ])
 
     // Check stdout messesges
@@ -138,13 +144,9 @@ describe('get-batch-runs', () => {
       'get-batch-runs',
       '--token',
       TOKEN_FOR_TEST,
-      '-c',
+      '--config',
       './test/magicpod_analyzer_test_gcs_bigquery.yaml',
       '--debug',
-      '--baseUrl',
-      MAGICPOD_FOR_TEST,
-      '--gcsBaseURL',
-      GCS_FOR_TEST,
     ])
 
     // Check stdout messesges
@@ -175,12 +177,8 @@ describe('get-batch-runs', () => {
     // Run command
     const {error} = await runCommand<{name: string}>([
       'get-batch-runs',
-      '-c',
+      '--config',
       './test/magicpod_analyzer_test_gcs_bigquery.yaml',
-      '--baseUrl',
-      MAGICPOD_FOR_TEST,
-      '--gcsBaseURL',
-      GCS_FOR_TEST,
     ])
 
     // Check error messesges
@@ -193,12 +191,8 @@ describe('get-batch-runs', () => {
       'get-batch-runs',
       '--token',
       'invalid',
-      '-c',
+      '--config',
       './test/magicpod_analyzer_test_gcs_bigquery.yaml',
-      '--baseUrl',
-      MAGICPOD_FOR_TEST,
-      '--gcsBaseURL',
-      GCS_FOR_TEST,
     ])
 
     // Check error messesges
@@ -212,12 +206,8 @@ describe('get-batch-runs', () => {
       'get-batch-runs',
       '--token',
       TOKEN_FOR_TEST,
-      '-c',
+      '--config',
       './test/magicpod_analyzer_test_not_exist.yaml',
-      '--baseUrl',
-      MAGICPOD_FOR_TEST,
-      '--gcsBaseURL',
-      GCS_FOR_TEST,
     ])
 
     // Check error messesges

@@ -12,7 +12,7 @@ export interface Exporter {
 export class CompositExporter implements Exporter {
   readonly exporters: Exporter[]
 
-  constructor(logger: Logger, config?: ExporterConfig, debugMode = false, baseUrl?: string) {
+  constructor(logger: Logger, config?: ExporterConfig, debugMode = false) {
     if (debugMode || !config) {
       this.exporters = [new LocalExporter(logger)]
       return
@@ -24,7 +24,7 @@ export class CompositExporter implements Exporter {
     }
 
     if (config.bigquery) {
-      this.exporters.push(new BigqueryExporter(logger, config.bigquery, baseUrl))
+      this.exporters.push(new BigqueryExporter(logger, config.bigquery))
     }
   }
 
