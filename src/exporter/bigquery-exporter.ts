@@ -27,7 +27,7 @@ export class BigqueryExporter implements Exporter {
     this.logger = logger.getChildLogger({name: BigqueryExporter.name})
     this.bigquery = new BigQuery({projectId: config.project, apiEndpoint: baseUrl})
     this.dataset = config.dataset
-    const testReportTable = config.reports?.find(report => report.name === 'test_report')?.table
+    const testReportTable = config.reports?.find((report) => report.name === 'test_report')?.table
     if (!testReportTable) {
       throw new Error("Must need both 'workflow' and 'test_report' table name in exporter.bigquery.reports config.")
     }
@@ -40,7 +40,7 @@ export class BigqueryExporter implements Exporter {
     // Write report as tmp json file
     const randString = crypto.randomBytes(8).toString('hex')
     const tmpJsonPath = path.resolve(os.tmpdir(), `magicpod_analyzer_${randString}.json`)
-    const reportJson = reports.map(report => JSON.stringify(report)).join('\n')
+    const reportJson = reports.map((report) => JSON.stringify(report)).join('\n')
     await fs.writeFile(tmpJsonPath, reportJson, {encoding: 'utf8'})
 
     // Load WorkflowReport table schema
@@ -49,18 +49,20 @@ export class BigqueryExporter implements Exporter {
     const schema = JSON.parse(schemaFile.toString())
 
     // Load to BigQuery
-    this.logger.info(`Loading ${tmpJsonPath} to ${this.dataset}.${this.table}. tmp file will be deleted if load complete with no error.`)
+    this.logger.info(
+      `Loading ${tmpJsonPath} to ${this.dataset}.${this.table}. tmp file will be deleted if load complete with no error.`,
+    )
     try {
       await this.bigquery
-      .dataset(this.dataset)
-      .table(this.table)
-      .load(tmpJsonPath, {
-        schema: {fields: schema},
-        maxBadRecords: this.maxBadRecords,
-        schemaUpdateOptions: ['ALLOW_FIELD_ADDITION'],
-        sourceFormat: 'NEWLINE_DELIMITED_JSON',
-        writeDisposition: 'WRITE_APPEND',
-      })
+        .dataset(this.dataset)
+        .table(this.table)
+        .load(tmpJsonPath, {
+          schema: {fields: schema},
+          maxBadRecords: this.maxBadRecords,
+          schemaUpdateOptions: ['ALLOW_FIELD_ADDITION'],
+          sourceFormat: 'NEWLINE_DELIMITED_JSON',
+          writeDisposition: 'WRITE_APPEND',
+        })
     } catch (error) {
       this.logger.error(`ERROR!! loading ${tmpJsonPath} to ${this.dataset}.${this.table}`)
       throw error

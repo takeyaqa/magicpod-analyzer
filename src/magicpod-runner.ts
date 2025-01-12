@@ -24,7 +24,15 @@ export class MagicPodRunner {
   private store?: LastRunStore
 
   // eslint-disable-next-line max-params
-  constructor(logger: Logger, config: MagicPodConfig, token = '', debugMode = false, baseUrl = 'https://app.magicpod.com', bigqueryBaseUrl?: string, gcsBaseUrl?: string) {
+  constructor(
+    logger: Logger,
+    config: MagicPodConfig,
+    token = '',
+    debugMode = false,
+    baseUrl = 'https://app.magicpod.com',
+    bigqueryBaseUrl?: string,
+    gcsBaseUrl?: string,
+  ) {
     this.logger = logger.getChildLogger({name: MagicPodRunner.name})
     this.config = config
     this.client = new MagicPodClient(token, logger, debugMode, baseUrl)

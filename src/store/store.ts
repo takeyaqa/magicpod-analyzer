@@ -21,7 +21,12 @@ export class LastRunStore {
   readonly store: Store
   private lastRun: LastRun
 
-  static async init(logger: Logger, config: LastRunStoreConfig, debugMode = false, baseUrl?: string): Promise<LastRunStore> {
+  static async init(
+    logger: Logger,
+    config: LastRunStoreConfig,
+    debugMode = false,
+    baseUrl?: string,
+  ): Promise<LastRunStore> {
     let store
     if (debugMode) {
       store = new NullStore(logger)

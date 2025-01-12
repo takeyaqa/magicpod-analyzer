@@ -22,40 +22,40 @@ describe('magicpod-analyzer', () => {
       batch_runs: [
         {
           batch_run_number: 200,
-          test_setting_name: "Fake Test Setting",
-          status: "succeeded",
-          started_at: "2024-07-18T03:00:00Z",
-          finished_at: "2024-07-18T04:00:00Z",
+          test_setting_name: 'Fake Test Setting',
+          status: 'succeeded',
+          started_at: '2024-07-18T03:00:00Z',
+          finished_at: '2024-07-18T04:00:00Z',
           test_cases: {
             succeeded: 2,
             total: 2,
             details: [
               {
-                pattern_name: "fake_pattern_01",
-                included_labels: ["Fake Label"],
+                pattern_name: 'fake_pattern_01',
+                included_labels: ['Fake Label'],
                 excluded_labels: [],
                 results: [
                   {
                     order: 1,
                     number: 1,
-                    status: "succeeded",
-                    started_at: "2024-07-18T03:00:00Z",
-                    finished_at: "2024-07-18T03:25:00Z",
+                    status: 'succeeded',
+                    started_at: '2024-07-18T03:00:00Z',
+                    finished_at: '2024-07-18T03:25:00Z',
                   },
                   {
                     order: 2,
                     number: 2,
-                    status: "succeeded",
-                    started_at: "2024-07-18T03:30:00Z",
-                    finished_at: "2024-07-18T03:55:00Z",
+                    status: 'succeeded',
+                    started_at: '2024-07-18T03:30:00Z',
+                    finished_at: '2024-07-18T03:55:00Z',
                   },
                 ],
               },
             ],
           },
-          url: "https://app.fakepod.example.com/FakeOrganization/FakeProject/batch-run/200/",
+          url: 'https://app.fakepod.example.com/FakeOrganization/FakeProject/batch-run/200/',
         },
-      ]
+      ],
     })
     expect(report).to.deep.equal([
       {
@@ -112,41 +112,41 @@ describe('magicpod-analyzer', () => {
       batch_runs: [
         {
           batch_run_number: 201,
-          test_setting_name: "Fake Test Setting",
-          status: "failed",
-          started_at: "2024-07-18T03:00:00Z",
-          finished_at: "2024-07-18T04:00:00Z",
+          test_setting_name: 'Fake Test Setting',
+          status: 'failed',
+          started_at: '2024-07-18T03:00:00Z',
+          finished_at: '2024-07-18T04:00:00Z',
           test_cases: {
             succeeded: 1,
             failed: 1,
             total: 2,
             details: [
               {
-                pattern_name: "fake_pattern_01",
-                included_labels: ["Fake Label"],
+                pattern_name: 'fake_pattern_01',
+                included_labels: ['Fake Label'],
                 excluded_labels: [],
                 results: [
                   {
                     order: 1,
                     number: 1,
-                    status: "succeeded",
-                    started_at: "2024-07-18T03:00:00Z",
-                    finished_at: "2024-07-18T03:25:00Z",
+                    status: 'succeeded',
+                    started_at: '2024-07-18T03:00:00Z',
+                    finished_at: '2024-07-18T03:25:00Z',
                   },
                   {
                     order: 2,
                     number: 2,
-                    status: "failed",
-                    started_at: "2024-07-18T03:30:00Z",
-                    finished_at: "2024-07-18T03:55:00Z",
+                    status: 'failed',
+                    started_at: '2024-07-18T03:30:00Z',
+                    finished_at: '2024-07-18T03:55:00Z',
                   },
                 ],
               },
             ],
           },
-          url: "https://app.fakepod.example.com/FakeOrganization/FakeProject/batch-run/200/",
+          url: 'https://app.fakepod.example.com/FakeOrganization/FakeProject/batch-run/200/',
         },
-      ]
+      ],
     })
     expect(report).to.deep.equal([
       {
