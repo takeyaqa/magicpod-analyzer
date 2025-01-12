@@ -1,6 +1,5 @@
 import * as chai from 'chai'
 import * as chaiAsPromised from 'chai-as-promised'
-import {Logger} from 'tslog'
 
 import {NullStore} from '../../src/store/null-store'
 
@@ -12,7 +11,7 @@ describe('null-store', () => {
   let store: NullStore
 
   beforeEach(async () => {
-    store = new NullStore(new Logger())
+    store = new NullStore()
   })
 
   it('read', async () => {

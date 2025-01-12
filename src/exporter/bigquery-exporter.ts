@@ -3,10 +3,10 @@ import * as crypto from 'node:crypto'
 import * as fs from 'node:fs/promises'
 import * as os from 'node:os'
 import * as path from 'node:path'
-import {Logger} from 'tslog'
 
 import {TestReport} from '../magicpod-analyzer'
 import {BigqueryExporterConfig} from '../magicpod-config'
+import {Logger, NullLogger} from '../util'
 import {Exporter} from './exporter'
 
 // eslint-disable-next-line unicorn/prefer-module
@@ -19,12 +19,12 @@ export class BigqueryExporter implements Exporter {
   readonly maxBadRecords: number
   private readonly logger: Logger
 
-  constructor(logger: Logger, config: BigqueryExporterConfig) {
+  constructor(config: BigqueryExporterConfig, logger: Logger = new NullLogger()) {
     if (!config.project || !config.dataset) {
       throw new Error("Must need 'project', 'dataset' parameter in exporter.bigquery config.")
     }
 
-    this.logger = logger.getChildLogger({name: BigqueryExporter.name})
+    this.logger = logger
     this.bigquery = new BigQuery({projectId: config.project})
     this.dataset = config.dataset
     const testReportTable = config.reports?.find((report) => report.name === 'test_report')?.table
@@ -49,7 +49,7 @@ export class BigqueryExporter implements Exporter {
     const schema = JSON.parse(schemaFile.toString())
 
     // Load to BigQuery
-    this.logger.info(
+    this.logger.log(
       `Loading ${tmpJsonPath} to ${this.dataset}.${this.table}. tmp file will be deleted if load complete with no error.`,
     )
     try {
@@ -64,7 +64,7 @@ export class BigqueryExporter implements Exporter {
           writeDisposition: 'WRITE_APPEND',
         })
     } catch (error) {
-      this.logger.error(`ERROR!! loading ${tmpJsonPath} to ${this.dataset}.${this.table}`)
+      this.logger.warn(`ERROR!! loading ${tmpJsonPath} to ${this.dataset}.${this.table}`)
       throw error
     }
 

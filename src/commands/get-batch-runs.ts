@@ -1,6 +1,5 @@
 /* eslint-disable no-await-in-loop */
 import {Command, Flags} from '@oclif/core'
-import {Logger} from 'tslog'
 
 import {CompositExporter} from '../exporter/exporter'
 import {MagicPodAnalyzer, TestReport} from '../magicpod-analyzer'
@@ -37,29 +36,20 @@ export default class GetBatchRuns extends Command {
 
   async run(): Promise<void> {
     const {flags} = await this.parse(GetBatchRuns)
-
-    const logger = new Logger({
-      overwriteConsole: true,
-      minLevel: flags.debug ? 'debug' : 'info',
-      displayInstanceName: true,
-      displayDateTime: false,
-      displayFunctionName: false,
-      displayFilePath: 'hidden',
-    })
     const configFile = flags.config ?? 'magicpod_analyzer.yaml'
 
     const config = await loadConfig(configFile)
-    const client = new MagicPodClient(flags.token, logger, flags.debug)
+    const client = new MagicPodClient(flags.token, flags.debug, this)
     const analyzer = new MagicPodAnalyzer()
     if (flags.debug) {
-      logger.info('--- Enable DEBUG mode ---')
+      this.log('--- Enable DEBUG mode ---')
     }
 
-    const store = await LastRunStore.init(logger, config.lastRunStore, flags.debug)
+    const store = await LastRunStore.init(config.lastRunStore, flags.debug, this)
     const allReports: TestReport[][] = []
     let result: Result = {status: 'success'}
     for (const project of config.projects) {
-      logger.info(`Fetching magicpod - ${project.fullName} ...`)
+      this.log(`Fetching magicpod - ${project.fullName} ...`)
 
       try {
         // retrieve
@@ -80,19 +70,19 @@ export default class GetBatchRuns extends Command {
         allReports.push(reports)
       } catch {
         const errorMessage = `Some error raised in '${project.fullName}', so it skipped.`
-        logger.error(errorMessage)
+        this.warn(errorMessage)
         result = {status: 'failure', error: new Error(errorMessage)}
         continue
       }
     }
 
     // export
-    logger.info('Exporting magicpod workflow reports ...')
-    const exporter = new CompositExporter(logger, config.exporter, flags.debug)
+    this.log('Exporting magicpod workflow reports ...')
+    const exporter = new CompositExporter(config.exporter, flags.debug, this)
     await exporter.exportTestReports(allReports.flat())
 
     await store.save()
-    logger.info(`Done execute 'magicpod'. status: ${result.status}`)
+    this.log(`Done execute 'magicpod'. status: ${result.status}`)
 
     if (result.error) {
       this.error(result.error, {exit: 1})

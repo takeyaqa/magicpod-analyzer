@@ -3,7 +3,6 @@ import * as chai from 'chai'
 import * as chaiAsPromised from 'chai-as-promised'
 import * as path from 'node:path'
 import * as td from 'testdouble'
-import {Logger} from 'tslog'
 
 import {GcsStore} from '../../src/store/gcs-store'
 
@@ -17,12 +16,7 @@ describe('gcs-store', () => {
 
   beforeEach(async () => {
     fileDouble = td.object<File>()
-    store = new GcsStore(
-      new Logger(),
-      'fake-project',
-      'fake-bucket',
-      path.join('ci_analyzer', 'last_run', 'magicpod.json'),
-    )
+    store = new GcsStore('fake-project', 'fake-bucket', path.join('ci_analyzer', 'last_run', 'magicpod.json'))
     store.file = fileDouble
   })
 
@@ -31,29 +25,24 @@ describe('gcs-store', () => {
   })
 
   it('initialize error', () => {
-    expect(() => new GcsStore(new Logger(), undefined, undefined)).to.throw(
+    expect(() => new GcsStore(undefined, undefined)).to.throw(
       "Must need 'project' and 'bucket' params for lastRunStore in config",
     )
-    expect(() => new GcsStore(new Logger(), 'fake-project', undefined)).to.throw(
+    expect(() => new GcsStore('fake-project', undefined)).to.throw(
       "Must need 'project' and 'bucket' params for lastRunStore in config",
     )
-    expect(() => new GcsStore(new Logger(), undefined, 'fake-bucket')).to.throw(
+    expect(() => new GcsStore(undefined, 'fake-bucket')).to.throw(
       "Must need 'project' and 'bucket' params for lastRunStore in config",
     )
   })
 
   it('initialize with no params', () => {
-    const store = new GcsStore(new Logger(), 'fake-project', 'fake-bucket')
+    const store = new GcsStore('fake-project', 'fake-bucket')
     expect(store.gcsPath).to.equal('gs://fake-bucket/ci_analyzer/last_run/magicpod.json')
   })
 
   it('initialize with path', () => {
-    const store = new GcsStore(
-      new Logger(),
-      'fake-project',
-      'fake-bucket',
-      path.join('test', 'last_run', 'magicpod.json'),
-    )
+    const store = new GcsStore('fake-project', 'fake-bucket', path.join('test', 'last_run', 'magicpod.json'))
     expect(store.gcsPath).to.equal('gs://fake-bucket/test/last_run/magicpod.json')
   })
 

@@ -3,7 +3,6 @@ import * as chaiAsPromised from 'chai-as-promised'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 import * as td from 'testdouble'
-import {Logger} from 'tslog'
 
 import {LocalStore} from '../../src/store/local-store'
 
@@ -17,7 +16,7 @@ describe('local-store', () => {
 
   beforeEach(async () => {
     fsDouble = td.replace('node:fs/promises')
-    store = new LocalStore(new Logger(), path.join('.magicpod_analyzer', 'last_run', 'magicpod.json'))
+    store = new LocalStore(path.join('.magicpod_analyzer', 'last_run', 'magicpod.json'))
     store.fs = fsDouble
   })
 
@@ -26,13 +25,13 @@ describe('local-store', () => {
   })
 
   it('initialize with no params', () => {
-    const store = new LocalStore(new Logger())
+    const store = new LocalStore()
     expect(path.isAbsolute(store.filePath)).to.be.true
     expect(store.filePath).to.equal(path.join(process.cwd(), '.magicpod_analyzer', 'last_run', 'magicpod.json'))
   })
 
   it('initialize with path', () => {
-    const store = new LocalStore(new Logger(), 'test.json')
+    const store = new LocalStore('test.json')
     expect(path.isAbsolute(store.filePath)).to.be.true
     expect(store.filePath).to.equal(path.join(process.cwd(), 'test.json'))
   })

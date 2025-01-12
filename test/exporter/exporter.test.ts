@@ -1,7 +1,6 @@
 import * as chai from 'chai'
 import * as chaiAsPromised from 'chai-as-promised'
 import * as td from 'testdouble'
-import {Logger} from 'tslog'
 
 import {BigqueryExporter} from '../../src/exporter/bigquery-exporter'
 import {CompositExporter} from '../../src/exporter/exporter'
@@ -17,7 +16,7 @@ describe('exporter', () => {
   let bigqueryExporterDouble: BigqueryExporter
 
   beforeEach(async () => {
-    exporter = new CompositExporter(new Logger(), {
+    exporter = new CompositExporter({
       local: {outDir: 'output'},
       bigquery: {
         project: 'fake-project',
@@ -36,7 +35,7 @@ describe('exporter', () => {
   })
 
   it('initialize', async () => {
-    const exporter = new CompositExporter(new Logger(), {
+    const exporter = new CompositExporter({
       local: {outDir: 'output'},
       bigquery: {
         project: 'fake-project',
@@ -51,7 +50,6 @@ describe('exporter', () => {
 
   it('initialize - debug mode', async () => {
     const exporter = new CompositExporter(
-      new Logger(),
       {
         local: {outDir: 'output'},
         bigquery: {
@@ -67,7 +65,7 @@ describe('exporter', () => {
   })
 
   it('initialize - without config', async () => {
-    const exporter = new CompositExporter(new Logger())
+    const exporter = new CompositExporter()
     expect(exporter.exporters.length).to.equal(1)
     expect(exporter.exporters[0]).to.be.instanceOf(LocalExporter)
   })

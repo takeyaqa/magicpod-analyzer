@@ -3,7 +3,6 @@ import * as chaiAsPromised from 'chai-as-promised'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 import * as td from 'testdouble'
-import {Logger} from 'tslog'
 
 import {LocalExporter} from '../../src/exporter/local-exporter'
 
@@ -23,19 +22,19 @@ describe('local-exporter', () => {
   })
 
   it('initialize with no params', async () => {
-    const exporter = new LocalExporter(new Logger())
+    const exporter = new LocalExporter()
     expect(path.isAbsolute(exporter.outDir)).to.be.true
     expect(exporter.outDir).to.equal(path.join(process.cwd(), 'output'))
   })
 
   it('initialize with outDir', async () => {
-    const exporter = new LocalExporter(new Logger(), {outDir: 'output'})
+    const exporter = new LocalExporter({outDir: 'output'})
     expect(path.isAbsolute(exporter.outDir)).to.be.true
     expect(exporter.outDir).to.equal(path.join(process.cwd(), 'output'))
   })
 
   it('exportTestReports - json', async () => {
-    const exporter = new LocalExporter(new Logger(), {outDir: 'output'})
+    const exporter = new LocalExporter({outDir: 'output'})
     exporter.fs = fsDouble
     await exporter.exportTestReports([
       {
@@ -227,7 +226,7 @@ describe('local-exporter', () => {
   })
 
   it('exportTestReports - json_lines', async () => {
-    const exporter = new LocalExporter(new Logger(), {outDir: 'output', format: 'json_lines'})
+    const exporter = new LocalExporter({outDir: 'output', format: 'json_lines'})
     exporter.fs = fsDouble
     await exporter.exportTestReports([
       {

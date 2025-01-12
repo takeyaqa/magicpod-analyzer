@@ -1,6 +1,5 @@
 import * as chai from 'chai'
 import * as chaiAsPromised from 'chai-as-promised'
-import {Logger} from 'tslog'
 
 import {LastRunStoreConfig} from '../../src/magicpod-config'
 import {GcsStore} from '../../src/store/gcs-store'
@@ -32,12 +31,12 @@ describe('store', () => {
 
   it('initialize', async () => {
     let config = {backend: 'local', filePath: 'test.json'} as LastRunStoreConfig
-    const nullStore = await LastRunStore.init(new Logger(), config, true)
+    const nullStore = await LastRunStore.init(config, true)
     expect(nullStore.store).to.be.instanceOf(NullStore)
-    const localStore = await LastRunStore.init(new Logger(), config)
+    const localStore = await LastRunStore.init(config)
     expect(localStore.store).to.be.instanceOf(LocalStore)
     config = {backend: 'gcs', project: 'fake-project', bucket: 'fake-bucket', path: 'test.json'} as LastRunStoreConfig
-    const gcsStore = await LastRunStore.init(new Logger(), config, false)
+    const gcsStore = await LastRunStore.init(config, false)
     expect(gcsStore.store).to.be.instanceOf(GcsStore)
   })
 })
