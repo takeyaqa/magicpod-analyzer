@@ -7,6 +7,7 @@ import {MagicPodAnalyzer, TestReport} from '../magicpod-analyzer'
 import {MagicPodClient} from '../magicpod-client'
 import {loadConfig} from '../magicpod-config'
 import {LastRunStore} from '../store/store'
+import {maxBy} from '../util'
 
 interface Result {
   status: 'success' | 'failure'
@@ -70,7 +71,7 @@ export default class GetBatchRuns extends Command {
 
         // store
         if (reports.length > 0) {
-          const lastRunReport = this.maxBy(reports, (report) => report.buildNumber)
+          const lastRunReport = maxBy(reports, (report) => report.buildNumber)
           if (lastRunReport) {
             store.setLastRun(project.fullName, lastRunReport.buildNumber)
           }
@@ -98,10 +99,5 @@ export default class GetBatchRuns extends Command {
     } else {
       this.exit()
     }
-  }
-
-  private maxBy<T>(collection: T[], iteratee: (item: T) => number): T | undefined {
-    const max = Math.max(...collection.map((item) => iteratee(item)))
-    return collection.find((item) => iteratee(item) === max)
   }
 }
