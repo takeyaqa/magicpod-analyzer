@@ -6,7 +6,7 @@ services:
     command: sleep infinity
 
   fakepod:
-    image: ghcr.io/takeyaqa/fakepod:0.2.1
+    image: ghcr.io/takeyaqa/fakepod:latest
     network_mode: service:development
 
   bigquery-emulator:
