@@ -707,13 +707,13 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.1.tgz#de633db3ec2ef6a3c89e2f19038063e8a122e2c2"
   integrity sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==
 
-"@google-cloud/bigquery@7.5.0":
-  version "7.5.0"
-  resolved "https://registry.yarnpkg.com/@google-cloud/bigquery/-/bigquery-7.5.0.tgz#7b3281d36b6823b923185cc2b87e391ec83ec87a"
-  integrity sha512-xYMy5WkNNqa9xqlHhOhHDHGCSjFiaN7vGHFV1rkbOFKTc4NilOxYO7BD03nYdClVyWN6qKy/qlmhPkAElb7ETw==
+"@google-cloud/bigquery@^7.9.1":
+  version "7.9.1"
+  resolved "https://registry.yarnpkg.com/@google-cloud/bigquery/-/bigquery-7.9.1.tgz#9e6213a62a2eeb8f547a817e4248379c0b93b35f"
+  integrity sha512-ZkcRMpBoFLxIh6TiQBywA22yT3c2j0f07AHWEMjtYqMQzZQbFrpxuJU2COp3tyjZ91ZIGHe4gY7/dGZL88cltg==
   dependencies:
     "@google-cloud/common" "^5.0.0"
-    "@google-cloud/paginator" "^5.0.0"
+    "@google-cloud/paginator" "^5.0.2"
     "@google-cloud/precise-date" "^4.0.0"
     "@google-cloud/promisify" "^4.0.0"
     arrify "^2.0.1"
@@ -739,7 +739,7 @@
     retry-request "^7.0.0"
     teeny-request "^9.0.0"
 
-"@google-cloud/paginator@^5.0.0":
+"@google-cloud/paginator@^5.0.0", "@google-cloud/paginator@^5.0.2":
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@google-cloud/paginator/-/paginator-5.0.2.tgz#86ad773266ce9f3b82955a8f75e22cd012ccc889"
   integrity sha512-DJS3s0OVH4zFDB1PzjxAsHqJT6sKVbRwwML0ZBP9PbU7Yebtu/7SWMRzvO2J3nUi9pRNITCfu4LJeooM2w4pjg==
@@ -5132,7 +5132,7 @@ tapable@^2.2.0:
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.2.1.tgz#1967a73ef4060a82f12ab96af86d52fdb76eeca0"
   integrity sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==
 
-teeny-request@9.0.0, teeny-request@^9.0.0:
+teeny-request@^9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/teeny-request/-/teeny-request-9.0.0.tgz#18140de2eb6595771b1b02203312dfad79a4716d"
   integrity sha512-resvxdc6Mgb7YEThw6G6bExlXKkv6+YbuzGg9xuXxSgxJF7Ozs+o8Y9+2R3sArdWdW8nOokoQb1yrpFB0pQK2g==
