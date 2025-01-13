@@ -17,7 +17,7 @@
     "/oclif.manifest.json"
   ],
   "dependencies": {
-    "@google-cloud/bigquery": "7.5.0",
+    "@google-cloud/bigquery": "7.9.1",
     "@google-cloud/storage": "^7.14.0",
     "@oclif/core": "^4",
     "@oclif/plugin-help": "^6",
