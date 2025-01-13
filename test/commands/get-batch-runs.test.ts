@@ -90,8 +90,10 @@ describe('get-batch-runs', () => {
     expect(stdout).to.contain("Done execute 'magicpod'. status: success")
 
     // Check output exists on GCS and BigQuery
-    const [rows] = await bigquery.dataset('fake-dataset').table('test_report').getRows()
-    expect(rows).to.have.length(100)
+    // const [rows] = await bigquery.dataset('fake-dataset').table('test_report').getRows()
+    // expect(rows).to.have.length(100)
+    const [result] = await bigquery.query('SELECT COUNT(*) AS rowCount FROM fake-dataset.test_report')
+    expect(result[0].rowCount).to.equal(100)
     const lastRunFile = await storage.bucket('fake-bucket').file('ci_analyzer/last_run/magicpod.json').download()
     const lastRun = JSON.parse(lastRunFile.toString())
     expect(lastRun).to.have.property('FakeOrganization/FakeProject')
@@ -131,8 +133,10 @@ describe('get-batch-runs', () => {
     expect(lastRun['FakeOrganization/FakeProject'].lastRun).to.equal(200)
 
     // Check output does not exist on GCS and BigQuery
-    const [rows] = await bigquery.dataset('fake-dataset').table('test_report').getRows()
-    expect(rows).to.have.length(0)
+    // const [rows] = await bigquery.dataset('fake-dataset').table('test_report').getRows()
+    // expect(rows).to.have.length(0)
+    const [result] = await bigquery.query('SELECT COUNT(*) AS rowCount FROM fake-dataset.test_report')
+    expect(result[0].rowCount).to.equal(0)
     const lastRunFileOnGcs = storage.bucket('fake-bucket').file('ci_analyzer/last_run/magicpod.json')
     const [existsLastRunFileOnGcs] = await lastRunFileOnGcs.exists()
     expect(existsLastRunFileOnGcs).to.be.false
@@ -166,8 +170,10 @@ describe('get-batch-runs', () => {
     )
 
     // Check output does not exist on GCS and BigQuery
-    const [rows] = await bigquery.dataset('fake-dataset').table('test_report').getRows()
-    expect(rows).to.have.length(0)
+    // const [rows] = await bigquery.dataset('fake-dataset').table('test_report').getRows()
+    // expect(rows).to.have.length(0)
+    const [result] = await bigquery.query('SELECT COUNT(*) AS rowCount FROM fake-dataset.test_report')
+    expect(result[0].rowCount).to.equal(0)
     const lastRunFileOnGcs = storage.bucket('fake-bucket').file('ci_analyzer/last_run/magicpod.json')
     const [existsLastRunFileOnGcs] = await lastRunFileOnGcs.exists()
     expect(existsLastRunFileOnGcs).to.be.false
