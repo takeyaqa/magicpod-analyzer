@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       fakepod:
-        image: ghcr.io/takeyaqa/fakepod:0.2.1
+        image: ghcr.io/takeyaqa/fakepod:latest
         ports:
           - 3000:3000
       bigquery-emulator:
