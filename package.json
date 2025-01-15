@@ -26,11 +26,11 @@
   "devDependencies": {
     "@oclif/prettier-config": "^0.2.1",
     "@oclif/test": "^4",
-    "@types/chai": "^4",
+    "@types/chai": "^5",
     "@types/chai-as-promised": "^7.1.8",
     "@types/mocha": "^10",
     "@types/node": "^18",
-    "chai": "^4",
+    "chai": "^5",
     "chai-as-promised": "^7.1.2",
     "eslint": "^8",
     "eslint-config-oclif": "^5",
