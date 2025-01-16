@@ -9,37 +9,37 @@ updates:
       include: "scope"
     ignore:
       - dependency-name: "@oclif/core"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "@oclif/plugin-help"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "@oclif/prettier-config"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "@oclif/test"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "@types/chai"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "@types/mocha"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "@types/node"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "chai"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "eslint"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "eslint-config-oclif"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "eslint-config-oclif-typescript"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "eslint-config-prettier"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "mocha"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "oclif"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "ts-node"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "typescript"
-        update-type: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "devcontainers"
     directory: "/"
     schedule:
