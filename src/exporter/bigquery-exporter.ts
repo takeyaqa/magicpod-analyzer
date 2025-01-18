@@ -1,15 +1,16 @@
 import {BigQuery} from '@google-cloud/bigquery'
-import * as crypto from 'node:crypto'
-import * as fs from 'node:fs/promises'
-import * as os from 'node:os'
-import * as path from 'node:path'
+import crypto from 'node:crypto'
+import fs from 'node:fs/promises'
+import os from 'node:os'
+import path from 'node:path'
+import url from 'node:url'
 
-import {TestReport} from '../magicpod-analyzer'
-import {BigqueryExporterConfig} from '../magicpod-config'
-import {Logger, NullLogger} from '../util'
-import {Exporter} from './exporter'
+import {TestReport} from '../magicpod-analyzer.js'
+import {BigqueryExporterConfig} from '../magicpod-config.js'
+import {Logger, NullLogger} from '../util.js'
+import {Exporter} from './exporter.js'
 
-// eslint-disable-next-line unicorn/prefer-module
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
 const SCHEMA_PATH = path.join(__dirname, '..', '..', 'bigquery_schema', 'test_report.json')
 
 export class BigqueryExporter implements Exporter {

@@ -1,5 +1,5 @@
-import {Logger, NullLogger} from '../util'
-import {LastRun, Store} from './store'
+import {Logger, NullLogger} from '../util.js'
+import {LastRun, Store} from './store.js'
 
 export class NullStore implements Store {
   private readonly logger: Logger

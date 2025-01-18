@@ -1,10 +1,11 @@
 import {BigQuery} from '@google-cloud/bigquery'
 import {Storage} from '@google-cloud/storage'
 import {runCommand} from '@oclif/test'
-import * as chai from 'chai'
-import * as chaiAsPromised from 'chai-as-promised'
-import * as fs from 'node:fs/promises'
-import * as path from 'node:path'
+import chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+import fs from 'node:fs/promises'
+import path from 'node:path'
+import url from 'node:url'
 import {teenyRequest} from 'teeny-request'
 
 chai.use(chaiAsPromised)
@@ -15,7 +16,7 @@ const TOKEN_FOR_TEST = '4uKNEY5hE4w3WCxi'
 const MAGICPOD_FOR_TEST = 'http://localhost:3000'
 const BIGQUERY_FOR_TEST = 'http://localhost:9050'
 const GCS_FOR_TEST = process.env.GITHUB_ACTIONS ? 'https://localhost:4443' : 'http://localhost:4443'
-// eslint-disable-next-line unicorn/prefer-module
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
 const SCHEMA_PATH = path.join(__dirname, '..', '..', 'bigquery_schema', 'test_report.json')
 
 describe('get-batch-runs', () => {

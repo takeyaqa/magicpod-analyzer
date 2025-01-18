@@ -1,7 +1,8 @@
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable camelcase */
-import * as chai from 'chai'
-import * as chaiAsPromised from 'chai-as-promised'
-import * as nock from 'nock'
+import chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+import nock from 'nock'
 
 import {MagicPodClient} from '../src/magicpod-client'
 

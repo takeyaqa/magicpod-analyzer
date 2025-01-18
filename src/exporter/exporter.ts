@@ -1,8 +1,8 @@
-import {TestReport} from '../magicpod-analyzer'
-import {ExporterConfig} from '../magicpod-config'
-import {Logger, NullLogger} from '../util'
-import {BigqueryExporter} from './bigquery-exporter'
-import {LocalExporter} from './local-exporter'
+import {TestReport} from '../magicpod-analyzer.js'
+import {ExporterConfig} from '../magicpod-config.js'
+import {Logger, NullLogger} from '../util.js'
+import {BigqueryExporter} from './bigquery-exporter.js'
+import {LocalExporter} from './local-exporter.js'
 
 export interface Exporter {
   exportTestReports(reports: TestReport[]): Promise<void>
