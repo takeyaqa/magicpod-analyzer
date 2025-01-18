@@ -1,6 +1,6 @@
 {
   "name": "magicpod-analyzer",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Export MagicPod test data for analyzing.",
   "author": "Takeshi Kishi",
   "bin": {
