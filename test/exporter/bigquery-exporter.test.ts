@@ -1,8 +1,9 @@
 import {BigQuery, Dataset, Table} from '@google-cloud/bigquery'
-import * as chai from 'chai'
-import * as chaiAsPromised from 'chai-as-promised'
-import * as fs from 'node:fs/promises'
-import * as path from 'node:path'
+import chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+import fs from 'node:fs/promises'
+import path from 'node:path'
+import url from 'node:url'
 import * as td from 'testdouble'
 
 import {BigqueryExporter} from '../../src/exporter/bigquery-exporter'
@@ -11,7 +12,7 @@ chai.use(chaiAsPromised)
 
 const {expect} = chai
 
-// eslint-disable-next-line unicorn/prefer-module
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
 const SCHEMA_PATH = path.join(__dirname, '..', '..', 'bigquery_schema', 'test_report.json')
 
 describe('bigquery-exporter', () => {

@@ -1,7 +1,7 @@
 import {File} from '@google-cloud/storage'
-import * as chai from 'chai'
-import * as chaiAsPromised from 'chai-as-promised'
-import * as path from 'node:path'
+import chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+import path from 'node:path'
 import * as td from 'testdouble'
 
 import {GcsStore} from '../../src/store/gcs-store'

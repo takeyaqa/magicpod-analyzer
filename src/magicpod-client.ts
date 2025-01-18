@@ -1,4 +1,4 @@
-import {Logger, NullLogger, minBy} from './util'
+import {Logger, NullLogger, minBy} from './util.js'
 
 type Status = 'not-running' | 'running' | 'succeeded' | 'failed' | 'aborted' | 'unresolved'
 

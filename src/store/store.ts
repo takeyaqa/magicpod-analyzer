@@ -1,8 +1,8 @@
-import {GCSLastRunStoreConfig, LastRunStoreConfig, LocalLastRunStoreConfig} from '../magicpod-config'
-import {Logger, NullLogger} from '../util'
-import {GcsStore} from './gcs-store'
-import {LocalStore} from './local-store'
-import {NullStore} from './null-store'
+import {GCSLastRunStoreConfig, LastRunStoreConfig, LocalLastRunStoreConfig} from '../magicpod-config.js'
+import {Logger, NullLogger} from '../util.js'
+import {GcsStore} from './gcs-store.js'
+import {LocalStore} from './local-store.js'
+import {NullStore} from './null-store.js'
 
 export interface LastRun {
   [repo: string]: {

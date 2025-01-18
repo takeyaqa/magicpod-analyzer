@@ -1,8 +1,8 @@
-import * as fs from 'node:fs/promises'
-import * as path from 'node:path'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 
-import {Logger, NullLogger} from '../util'
-import {LastRun, Store} from './store'
+import {Logger, NullLogger} from '../util.js'
+import {LastRun, Store} from './store.js'
 
 export class LocalStore implements Store {
   fs = fs

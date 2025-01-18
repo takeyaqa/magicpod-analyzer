@@ -1,7 +1,7 @@
-import * as chai from 'chai'
-import * as chaiAsPromised from 'chai-as-promised'
-import * as fs from 'node:fs/promises'
-import * as path from 'node:path'
+import chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 import * as td from 'testdouble'
 
 import {LocalExporter} from '../../src/exporter/local-exporter'

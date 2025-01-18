@@ -1,12 +1,12 @@
 /* eslint-disable no-await-in-loop */
 import {Command, Flags} from '@oclif/core'
 
-import {CompositExporter} from '../exporter/exporter'
-import {MagicPodAnalyzer, TestReport} from '../magicpod-analyzer'
-import {MagicPodClient} from '../magicpod-client'
-import {loadConfig} from '../magicpod-config'
-import {LastRunStore} from '../store/store'
-import {maxBy} from '../util'
+import {CompositExporter} from '../exporter/exporter.js'
+import {MagicPodAnalyzer, TestReport} from '../magicpod-analyzer.js'
+import {MagicPodClient} from '../magicpod-client.js'
+import {loadConfig} from '../magicpod-config.js'
+import {LastRunStore} from '../store/store.js'
+import {maxBy} from '../util.js'
 
 interface Result {
   status: 'success' | 'failure'

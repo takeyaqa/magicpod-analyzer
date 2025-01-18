@@ -1,8 +1,8 @@
 import {File, Storage} from '@google-cloud/storage'
-import * as path from 'node:path'
+import path from 'node:path'
 
-import {Logger, NullLogger} from '../util'
-import {LastRun, Store} from './store'
+import {Logger, NullLogger} from '../util.js'
+import {LastRun, Store} from './store.js'
 
 export class GcsStore implements Store {
   file: File

@@ -1,10 +1,10 @@
-import * as fs from 'node:fs/promises'
-import * as path from 'node:path'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 
-import {TestReport} from '../magicpod-analyzer'
-import {LocalExporterConfig} from '../magicpod-config'
-import {Logger, NullLogger} from '../util'
-import {Exporter} from './exporter'
+import {TestReport} from '../magicpod-analyzer.js'
+import {LocalExporterConfig} from '../magicpod-config.js'
+import {Logger, NullLogger} from '../util.js'
+import {Exporter} from './exporter.js'
 
 export class LocalExporter implements Exporter {
   fs = fs

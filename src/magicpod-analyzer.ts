@@ -1,4 +1,4 @@
-import {BatchRuns, TestCaseResult} from './magicpod-client'
+import {BatchRuns, TestCaseResult} from './magicpod-client.js'
 
 export interface TestReport {
   workflowId: string
