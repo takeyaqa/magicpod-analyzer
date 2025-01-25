@@ -9,6 +9,10 @@ Export MagicPod test data for analyzing. Inspired by [CIAnalyzer](https://github
 
 [日本語版はこちら](./README.ja.md)
 
+> [!IMPORTANT]
+> This project is now in Maintenance Mode. No new features will be added, but we will address critical bug fixes and update dependencies as needed. 
+> For users seeking more actively developed solutions, we recommend exploring similar tools that may better meet your requirements. Thank you for your understanding and continued support.
+
 <!-- toc -->
 * [Usage](#usage)
 * [Commands](#commands)
@@ -20,7 +24,7 @@ $ npm install -g magicpod-analyzer
 $ magicpod-analyzer COMMAND
 running command...
 $ magicpod-analyzer (--version)
-magicpod-analyzer/0.8.0 linux-arm64 node-v22.12.0
+magicpod-analyzer/0.9.0 linux-arm64 node-v22.12.0
 $ magicpod-analyzer --help [COMMAND]
 USAGE
   $ magicpod-analyzer COMMAND
@@ -54,7 +58,7 @@ EXAMPLES
   $ magicpod-analyzer get-batch-runs
 ```
 
-_See code: [src/commands/get-batch-runs.ts](https://github.com/takeyaqa/magicpod-analyzer/blob/v0.8.0/src/commands/get-batch-runs.ts)_
+_See code: [src/commands/get-batch-runs.ts](https://github.com/takeyaqa/magicpod-analyzer/blob/v0.9.0/src/commands/get-batch-runs.ts)_
 
 ## `magicpod-analyzer help [COMMAND]`
 
@@ -74,5 +78,5 @@ DESCRIPTION
   Display help for magicpod-analyzer.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.21/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.22/src/commands/help.ts)_
 <!-- commandsstop -->
