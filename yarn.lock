@@ -668,9 +668,9 @@
   integrity sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==
 
 "@google-cloud/bigquery@^7.9.1":
-  version "7.9.1"
-  resolved "https://registry.yarnpkg.com/@google-cloud/bigquery/-/bigquery-7.9.1.tgz#9e6213a62a2eeb8f547a817e4248379c0b93b35f"
-  integrity sha512-ZkcRMpBoFLxIh6TiQBywA22yT3c2j0f07AHWEMjtYqMQzZQbFrpxuJU2COp3tyjZ91ZIGHe4gY7/dGZL88cltg==
+  version "7.9.2"
+  resolved "https://registry.yarnpkg.com/@google-cloud/bigquery/-/bigquery-7.9.2.tgz#470dd5b5a918ab2c3a87734fd18441bb906101d3"
+  integrity sha512-Yo7oYE6m7bBT28tYDn6dBwbXZxCt+nWREj/0y5aoUq0rFUGwLUDKAXwgt6OQJ2htDzGiQ3s0yltCBjKFtqVCmA==
   dependencies:
     "@google-cloud/common" "^5.0.0"
     "@google-cloud/paginator" "^5.0.2"
