@@ -24,7 +24,7 @@ $ npm install -g magicpod-analyzer
 $ magicpod-analyzer COMMAND
 running command...
 $ magicpod-analyzer (--version)
-magicpod-analyzer/0.9.2 linux-arm64 node-v22.12.0
+magicpod-analyzer/0.9.3 linux-arm64 node-v22.14.0
 $ magicpod-analyzer --help [COMMAND]
 USAGE
   $ magicpod-analyzer COMMAND
@@ -58,7 +58,7 @@ EXAMPLES
   $ magicpod-analyzer get-batch-runs
 ```
 
-_See code: [src/commands/get-batch-runs.ts](https://github.com/takeyaqa/magicpod-analyzer/blob/v0.9.2/src/commands/get-batch-runs.ts)_
+_See code: [src/commands/get-batch-runs.ts](https://github.com/takeyaqa/magicpod-analyzer/blob/v0.9.3/src/commands/get-batch-runs.ts)_
 
 ## `magicpod-analyzer help [COMMAND]`
 
@@ -78,5 +78,5 @@ DESCRIPTION
   Display help for magicpod-analyzer.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.25/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.27/src/commands/help.ts)_
 <!-- commandsstop -->
