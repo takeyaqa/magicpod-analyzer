@@ -9,9 +9,8 @@ Export MagicPod test data for analyzing. Inspired by [CIAnalyzer](https://github
 
 [日本語版はこちら](./README.ja.md)
 
-> [!IMPORTANT]
-> This project is now in Maintenance Mode. No new features will be added, but we will address critical bug fixes and update dependencies as needed. 
-> For users seeking more actively developed solutions, we recommend exploring similar tools that may better meet your requirements. Thank you for your understanding and continued support.
+> [!WARNING]
+> This package is scheduled to be archived around October 1, 2025. It will no longer be maintained. Please consider migrating to an alternative if you are using it.
 
 <!-- toc -->
 * [Usage](#usage)
@@ -24,7 +23,7 @@ $ npm install -g magicpod-analyzer
 $ magicpod-analyzer COMMAND
 running command...
 $ magicpod-analyzer (--version)
-magicpod-analyzer/0.9.3 linux-arm64 node-v22.14.0
+magicpod-analyzer/0.10.0 linux-arm64 node-v22.14.0
 $ magicpod-analyzer --help [COMMAND]
 USAGE
   $ magicpod-analyzer COMMAND
@@ -58,7 +57,7 @@ EXAMPLES
   $ magicpod-analyzer get-batch-runs
 ```
 
-_See code: [src/commands/get-batch-runs.ts](https://github.com/takeyaqa/magicpod-analyzer/blob/v0.9.3/src/commands/get-batch-runs.ts)_
+_See code: [src/commands/get-batch-runs.ts](https://github.com/takeyaqa/magicpod-analyzer/blob/v0.10.0/src/commands/get-batch-runs.ts)_
 
 ## `magicpod-analyzer help [COMMAND]`
 
