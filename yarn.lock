@@ -118,7 +118,7 @@
     "@smithy/util-waiter" "^4.0.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-s3@^3.782.0":
+"@aws-sdk/client-s3@^3.787.0":
   version "3.787.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/client-s3/-/client-s3-3.787.0.tgz#ebb55ec36cd8f0b7e5e89e48c4d1b6ed1f6156dc"
   integrity sha512-eGLCWkN0NlntJ9yPU6OKUggVS4cFvuZJog+cFg1KD5hniLqz7Y0YRtB4uBxW212fK3XCfddgyscEOEeHaTQQTw==
@@ -1086,7 +1086,7 @@
     ansis "^3.17.0"
     fast-levenshtein "^3.0.0"
 
-"@oclif/plugin-warn-if-update-available@^3.1.31":
+"@oclif/plugin-warn-if-update-available@^3.1.38":
   version "3.1.38"
   resolved "https://registry.yarnpkg.com/@oclif/plugin-warn-if-update-available/-/plugin-warn-if-update-available-3.1.38.tgz#331f9ed8d6e9e36919c0814b24c8c9adbfe2acc4"
   integrity sha512-lwYtVXdQaBJV94DglPu140Bc6NmmysHhX5PZtdxeNcUG2BgSX/Sre7oCzMEgmuhe4Lu2jDviMxTX81a8wv6v1w==
@@ -4468,19 +4468,19 @@ object.values@^1.2.0:
     es-object-atoms "^1.0.0"
 
 oclif@^4:
-  version "4.17.44"
-  resolved "https://registry.yarnpkg.com/oclif/-/oclif-4.17.44.tgz#13df89d893df41fd1d312d603091aaed68f770db"
-  integrity sha512-w05L5LKhPiKT5uAn1yzMV+5EpwNvUrJKIlgtzBm4QxMlQ+MsBVclnCXoji1s+Kr0kZd8aC3x8q6VYiuoCxRuZQ==
+  version "4.17.46"
+  resolved "https://registry.yarnpkg.com/oclif/-/oclif-4.17.46.tgz#c7bd4315ae4903ad5f9893f6d6e7b3b78c4209fb"
+  integrity sha512-huMvamv0zzIXrCbW5sgy40P1L6fJjPe4IfZKSmkmuPNGSpTy+fcNZ0gYwIuMlxiT3RarLYxYie+RVTyJLE3zXw==
   dependencies:
     "@aws-sdk/client-cloudfront" "^3.787.0"
-    "@aws-sdk/client-s3" "^3.782.0"
+    "@aws-sdk/client-s3" "^3.787.0"
     "@inquirer/confirm" "^3.1.22"
     "@inquirer/input" "^2.2.4"
     "@inquirer/select" "^2.5.0"
     "@oclif/core" "^4.2.10"
     "@oclif/plugin-help" "^6.2.27"
     "@oclif/plugin-not-found" "^3.2.48"
-    "@oclif/plugin-warn-if-update-available" "^3.1.31"
+    "@oclif/plugin-warn-if-update-available" "^3.1.38"
     async-retry "^1.3.3"
     chalk "^4"
     change-case "^4"
