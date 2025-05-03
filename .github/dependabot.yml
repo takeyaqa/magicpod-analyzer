@@ -8,37 +8,7 @@ updates:
       prefix: "build"
       include: "scope"
     ignore:
-      - dependency-name: "@oclif/core"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@oclif/plugin-help"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@oclif/prettier-config"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@oclif/test"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@types/chai"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@types/mocha"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@types/node"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "chai"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "eslint"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "eslint-config-oclif"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "eslint-config-oclif-typescript"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "eslint-config-prettier"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "mocha"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "oclif"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "ts-node"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "typescript"
+      - dependency-name: "*"
         update-types: ["version-update:semver-major"]
   - package-ecosystem: "devcontainers"
     directory: "/"
