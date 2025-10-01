@@ -7,7 +7,7 @@ MagicPodのテスト実行データを分析用に出力します. [CIAnalyzer](
 [![Version](https://img.shields.io/npm/v/magicpod-analyzer.svg)](https://npmjs.org/package/magicpod-analyzer)
 [![Downloads/week](https://img.shields.io/npm/dw/magicpod-analyzer.svg)](https://npmjs.org/package/magicpod-analyzer)
 
-> [!WARNING]
+> [!CAUTION]
 > このパッケージは2025年10月1日にアーカイブされました。以降の保守は行われません。ご利用中の方は代替手段をご検討ください。
 
 <!-- toc -->
