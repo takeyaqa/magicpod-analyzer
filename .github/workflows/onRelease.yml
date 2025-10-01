@@ -20,5 +20,5 @@ jobs:
       - run: yarn
       - run: yarn build
       - run: yarn prepack
-      - run: yarn publish
+      - run: yarn publish --non-interactive
       - run: yarn postpack
