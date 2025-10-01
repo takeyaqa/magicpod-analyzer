@@ -20,5 +20,5 @@ jobs:
       - run: yarn
       - run: yarn build
       - run: yarn prepack
-      - run: yarn npm publish
+      - run: yarn publish
       - run: yarn postpack
