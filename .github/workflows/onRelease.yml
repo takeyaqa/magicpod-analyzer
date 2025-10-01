@@ -17,8 +17,9 @@ jobs:
         with:
           node-version: latest
           registry-url: 'https://registry.npmjs.org'
+      - run: npm install -g npm@latest
       - run: yarn
       - run: yarn build
       - run: yarn prepack
-      - run: yarn publish --non-interactive
+      - run: npm publish
       - run: yarn postpack
