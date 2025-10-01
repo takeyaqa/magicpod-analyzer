@@ -8,7 +8,7 @@ MagicPodのテスト実行データを分析用に出力します. [CIAnalyzer](
 [![Downloads/week](https://img.shields.io/npm/dw/magicpod-analyzer.svg)](https://npmjs.org/package/magicpod-analyzer)
 
 > [!WARNING]
-> このパッケージは2025年10月1日を目処にアーカイブ予定です。以降の保守は行われません。ご利用中の方は代替手段をご検討ください。
+> このパッケージは2025年10月1日にアーカイブされました。以降の保守は行われません。ご利用中の方は代替手段をご検討ください。
 
 <!-- toc -->
 * [使い方](#usage)
@@ -21,7 +21,7 @@ $ npm install -g magicpod-analyzer
 $ magicpod-analyzer COMMAND
 running command...
 $ magicpod-analyzer (--version)
-magicpod-analyzer/0.10.5 linux-arm64 node-v22.15.0
+magicpod-analyzer/0.10.6 linux-arm64 node-v22.15.0
 $ magicpod-analyzer --help [COMMAND]
 USAGE
   $ magicpod-analyzer COMMAND
@@ -55,7 +55,7 @@ EXAMPLES
   $ magicpod-analyzer get-batch-runs
 ```
 
-_See code: [src/commands/get-batch-runs.ts](https://github.com/takeyaqa/magicpod-analyzer/blob/v0.10.5/src/commands/get-batch-runs.ts)_
+_See code: [src/commands/get-batch-runs.ts](https://github.com/takeyaqa/magicpod-analyzer/blob/v0.10.6/src/commands/get-batch-runs.ts)_
 
 ## `magicpod-analyzer help [COMMAND]`
 
